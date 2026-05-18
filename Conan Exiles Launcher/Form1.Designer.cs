@@ -32,22 +32,22 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
             splitContainer1 = new SplitContainer();
             tableLayoutPanel2 = new TableLayoutPanel();
-            AvailableModsList = new ListBox();
             AddModButton = new Button();
+            AvailableModsList = new ListBox();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            label2 = new Label();
-            SelectedModsList = new ListBox();
             RemoveModButton = new Button();
+            label2 = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             label3 = new Label();
             ArrangeModPosition = new NumericUpDown();
+            SelectedModsList = new ListBox();
             PlayButton = new Button();
             ModOrderTooltip = new ToolTip(components);
-            comboBox1 = new ComboBox();
             label4 = new Label();
-            button1 = new Button();
-            button2 = new Button();
+            ImportButton = new Button();
+            ServersList = new ListBox();
+            AddServerButton = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -89,6 +89,13 @@
             ModOrderTooltip.SetToolTip(tableLayoutPanel2, resources.GetString("tableLayoutPanel2.ToolTip"));
             tableLayoutPanel2.Paint += tableLayoutPanel2_Paint;
             // 
+            // AddModButton
+            // 
+            resources.ApplyResources(AddModButton, "AddModButton");
+            AddModButton.Name = "AddModButton";
+            ModOrderTooltip.SetToolTip(AddModButton, resources.GetString("AddModButton.ToolTip"));
+            AddModButton.UseVisualStyleBackColor = true;
+            // 
             // AvailableModsList
             // 
             resources.ApplyResources(AvailableModsList, "AvailableModsList");
@@ -96,13 +103,6 @@
             AvailableModsList.FormattingEnabled = true;
             AvailableModsList.Name = "AvailableModsList";
             ModOrderTooltip.SetToolTip(AvailableModsList, resources.GetString("AvailableModsList.ToolTip"));
-            // 
-            // AddModButton
-            // 
-            resources.ApplyResources(AddModButton, "AddModButton");
-            AddModButton.Name = "AddModButton";
-            ModOrderTooltip.SetToolTip(AddModButton, resources.GetString("AddModButton.ToolTip"));
-            AddModButton.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -120,27 +120,19 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             ModOrderTooltip.SetToolTip(tableLayoutPanel1, resources.GetString("tableLayoutPanel1.ToolTip"));
             // 
-            // label2
-            // 
-            resources.ApplyResources(label2, "label2");
-            tableLayoutPanel1.SetColumnSpan(label2, 2);
-            label2.Name = "label2";
-            ModOrderTooltip.SetToolTip(label2, resources.GetString("label2.ToolTip"));
-            // 
-            // SelectedModsList
-            // 
-            resources.ApplyResources(SelectedModsList, "SelectedModsList");
-            tableLayoutPanel1.SetColumnSpan(SelectedModsList, 2);
-            SelectedModsList.FormattingEnabled = true;
-            SelectedModsList.Name = "SelectedModsList";
-            ModOrderTooltip.SetToolTip(SelectedModsList, resources.GetString("SelectedModsList.ToolTip"));
-            // 
             // RemoveModButton
             // 
             resources.ApplyResources(RemoveModButton, "RemoveModButton");
             RemoveModButton.Name = "RemoveModButton";
             ModOrderTooltip.SetToolTip(RemoveModButton, resources.GetString("RemoveModButton.ToolTip"));
             RemoveModButton.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            resources.ApplyResources(label2, "label2");
+            tableLayoutPanel1.SetColumnSpan(label2, 2);
+            label2.Name = "label2";
+            ModOrderTooltip.SetToolTip(label2, resources.GetString("label2.ToolTip"));
             // 
             // flowLayoutPanel1
             // 
@@ -164,6 +156,14 @@
             ModOrderTooltip.SetToolTip(ArrangeModPosition, resources.GetString("ArrangeModPosition.ToolTip"));
             ArrangeModPosition.ValueChanged += ArrangeModPosition_ValueChanged;
             // 
+            // SelectedModsList
+            // 
+            resources.ApplyResources(SelectedModsList, "SelectedModsList");
+            tableLayoutPanel1.SetColumnSpan(SelectedModsList, 2);
+            SelectedModsList.FormattingEnabled = true;
+            SelectedModsList.Name = "SelectedModsList";
+            ModOrderTooltip.SetToolTip(SelectedModsList, resources.GetString("SelectedModsList.ToolTip"));
+            // 
             // PlayButton
             // 
             resources.ApplyResources(PlayButton, "PlayButton");
@@ -176,13 +176,6 @@
             // 
             ModOrderTooltip.ToolTipTitle = "Mod Order";
             // 
-            // comboBox1
-            // 
-            resources.ApplyResources(comboBox1, "comboBox1");
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Name = "comboBox1";
-            ModOrderTooltip.SetToolTip(comboBox1, resources.GetString("comboBox1.ToolTip"));
-            // 
             // label4
             // 
             resources.ApplyResources(label4, "label4");
@@ -191,19 +184,26 @@
             ModOrderTooltip.SetToolTip(label4, resources.GetString("label4.ToolTip"));
             label4.Click += label4_Click;
             // 
-            // button1
+            // ImportButton
             // 
-            resources.ApplyResources(button1, "button1");
-            button1.Name = "button1";
-            ModOrderTooltip.SetToolTip(button1, resources.GetString("button1.ToolTip"));
-            button1.UseVisualStyleBackColor = true;
+            resources.ApplyResources(ImportButton, "ImportButton");
+            ImportButton.Name = "ImportButton";
+            ModOrderTooltip.SetToolTip(ImportButton, resources.GetString("ImportButton.ToolTip"));
+            ImportButton.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // ServersList
             // 
-            resources.ApplyResources(button2, "button2");
-            button2.Name = "button2";
-            ModOrderTooltip.SetToolTip(button2, resources.GetString("button2.ToolTip"));
-            button2.UseVisualStyleBackColor = true;
+            resources.ApplyResources(ServersList, "ServersList");
+            ServersList.FormattingEnabled = true;
+            ServersList.Name = "ServersList";
+            ModOrderTooltip.SetToolTip(ServersList, resources.GetString("ServersList.ToolTip"));
+            // 
+            // AddServerButton
+            // 
+            resources.ApplyResources(AddServerButton, "AddServerButton");
+            AddServerButton.Name = "AddServerButton";
+            ModOrderTooltip.SetToolTip(AddServerButton, resources.GetString("AddServerButton.ToolTip"));
+            AddServerButton.UseVisualStyleBackColor = true;
             // 
             // Launcher
             // 
@@ -211,10 +211,10 @@
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(AddServerButton);
+            Controls.Add(ServersList);
+            Controls.Add(ImportButton);
             Controls.Add(label4);
-            Controls.Add(comboBox1);
             Controls.Add(splitContainer1);
             Controls.Add(PlayButton);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
@@ -252,9 +252,9 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
         private Button AddModButton;
-        private ComboBox comboBox1;
         private Label label4;
-        private Button button1;
-        private Button button2;
+        private Button ImportButton;
+        private ListBox ServersList;
+        private Button AddServerButton;
     }
 }
