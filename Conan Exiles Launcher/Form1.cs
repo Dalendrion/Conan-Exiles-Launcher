@@ -1,3 +1,5 @@
+using Conan_Exiles_Launcher.Core.Adapters.GameSettings;
+using Conan_Exiles_Launcher.Ports.GameSettings;
 using System.Diagnostics;
 
 namespace Conan_Exiles_Launcher
@@ -14,29 +16,18 @@ namespace Conan_Exiles_Launcher
             Process.Start("D:\\SteamLibrary\\steamapps\\common\\Conan Exiles\\ConanSandbox\\Binaries\\Win64\\ConanSandbox-Win64-Shipping.exe");
         }
 
-        private void ArrangeModPosition_KeyDown(object sender, KeyEventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up)
+            IGameSettingsReader reader = new GameSettingsReader();
+            GameSettingsData gameSettings = reader.ReadGameSettings();
+
+            // TODO: Get mod data!!!
+
+            Debug.WriteLine(gameSettings.LastServer.ToString());
+            foreach (ServerData data in gameSettings.Favorites)
             {
-                return;
+                Debug.WriteLine(data.ToString());
             }
-
-            e.Handled = true;
-        }
-
-        private void ArrangeModPosition_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

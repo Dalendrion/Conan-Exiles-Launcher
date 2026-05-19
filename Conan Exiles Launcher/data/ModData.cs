@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Conan_Exiles_Launcher.data
+﻿
+namespace Conan_Exiles_Launcher.Data
 {
     internal class ModData
     {
