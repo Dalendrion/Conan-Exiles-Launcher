@@ -13,7 +13,7 @@ namespace Conan_Exiles_Launcher
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            Process.Start("D:\\SteamLibrary\\steamapps\\common\\Conan Exiles\\ConanSandbox\\Binaries\\Win64\\ConanSandbox-Win64-Shipping.exe");
+            Process.Start("D:\\SteamLibrary\\steamapps\\common\\Conan Exiles\\ConanSandbox\\Binaries\\Win64\\ConanSandbox-Win64-Shipping.exe", "+continuesession");
         }
 
         private void button3_Click(object sender, EventArgs e)
