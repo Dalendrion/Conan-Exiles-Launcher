@@ -1,8 +1,9 @@
-﻿using Conan_Exiles_Launcher.Core.Adapters.Files;
-using Conan_Exiles_Launcher.Core.Adapters.GameSettings;
+﻿using Conan_Exiles_Launcher.Core.Model;
+using Conan_Exiles_Launcher.Core.Ports.Files;
+using Conan_Exiles_Launcher.Core.Ports.GameSettings;
 using Conan_Exiles_Launcher.Data;
 
-namespace Conan_Exiles_Launcher.Ports.GameSettings
+namespace Conan_Exiles_Launcher.Adapters.GameSettings
 {
     public class GameSettingsReader : IGameSettingsReader
     {

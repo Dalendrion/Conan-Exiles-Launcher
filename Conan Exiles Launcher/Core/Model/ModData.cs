@@ -1,7 +1,6 @@
-﻿
-namespace Conan_Exiles_Launcher.Data
+﻿namespace Conan_Exiles_Launcher.Core.Model
 {
-    internal class ModData
+    public class ModData
     {
         private string _name;
         private string _id;

@@ -1,7 +1,6 @@
-﻿using Conan_Exiles_Launcher.Data;
-using System.Text;
+﻿using System.Text;
 
-namespace Conan_Exiles_Launcher.Core.Adapters.Files
+namespace Conan_Exiles_Launcher.Core.Ports.Files
 {
     internal class FileLineReader
     {

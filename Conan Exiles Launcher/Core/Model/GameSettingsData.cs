@@ -1,5 +1,4 @@
-﻿
-namespace Conan_Exiles_Launcher.Core.Adapters.GameSettings
+﻿namespace Conan_Exiles_Launcher.Core.Model
 {
     public class GameSettingsData
     {

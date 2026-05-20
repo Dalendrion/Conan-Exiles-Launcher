@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Conan_Exiles_Launcher.Data
+﻿namespace Conan_Exiles_Launcher.Data
 {
     internal class Settings
     {

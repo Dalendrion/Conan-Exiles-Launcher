@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Conan_Exiles_Launcher.Core.Adapters.GameSettings
+﻿namespace Conan_Exiles_Launcher.Core.Model
 {
     public class ServerData
     {
