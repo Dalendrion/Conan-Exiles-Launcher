@@ -6,9 +6,11 @@
         private string _gamePath = "steamapps\\common\\Conan Exiles\\ConanSandbox\\";
         private string _gameIni = "Saved\\Game.ini";
         private string _modlistPath = "Mods\\modlist.txt";
+        private string _serverModlistPath = "servermodlist.txt";
         private string _workshopContent = "steamapps\\workshop\\content\\440900\\";
         private string _sandboxExecutable = "Binaries\\Win64\\ConanSandbox-Win64-Shipping.exe";
         private string _sandboxBattleEyeExecutable = "Binaries\\Win64\\ConanSandbox_BE.exe";
+        private string _savedData = "C:\\Users\\avermaas\\Desktop\\Conan Exiles\\conan_exiles_launcher_data.json";
 
         public static Settings Instance {
             get
@@ -41,6 +43,14 @@
             }
         }
 
+        public string ServerModlistPath
+        {
+            get
+            {
+                return _steamPath + _gamePath + _serverModlistPath;
+            }
+        }
+
         public string SandboxExecutablePath
         {
             get
@@ -70,6 +80,14 @@
             get
             {
                 return _steamPath + _gamePath + _gameIni;
+            }
+        }
+
+        public string SavedDataPath
+        {
+            get
+            {
+                return _savedData;
             }
         }
     }

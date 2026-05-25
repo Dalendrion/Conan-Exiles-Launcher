@@ -31,36 +31,37 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
             ModOrderTooltip = new ToolTip(components);
-            button3 = new Button();
+            ImportServerAndModlistButton = new Button();
             SuspendLayout();
             // 
             // ModOrderTooltip
             // 
             ModOrderTooltip.ToolTipTitle = "Mod Order";
             // 
-            // button3
+            // ImportServerAndModlistButton
             // 
-            resources.ApplyResources(button3, "button3");
-            button3.Name = "button3";
-            ModOrderTooltip.SetToolTip(button3, resources.GetString("button3.ToolTip"));
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            resources.ApplyResources(ImportServerAndModlistButton, "ImportServerAndModlistButton");
+            ImportServerAndModlistButton.Name = "ImportServerAndModlistButton";
+            ModOrderTooltip.SetToolTip(ImportServerAndModlistButton, resources.GetString("ImportServerAndModlistButton.ToolTip"));
+            ImportServerAndModlistButton.UseVisualStyleBackColor = true;
+            ImportServerAndModlistButton.Click += ImportServerAndModsButton_Click;
             // 
             // Launcher
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            Controls.Add(button3);
+            Controls.Add(ImportServerAndModlistButton);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "Launcher";
             SizeGripStyle = SizeGripStyle.Hide;
             ModOrderTooltip.SetToolTip(this, resources.GetString("$this.ToolTip"));
+            Load += Launcher_Load;
             ResumeLayout(false);
         }
 
         #endregion
         private ToolTip ModOrderTooltip;
-        private Button button3;
+        private Button ImportServerAndModlistButton;
     }
 }
