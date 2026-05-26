@@ -29,10 +29,7 @@ namespace Conan_Exiles_Launcher.Domain.Adapters
         private ServerData getServerData(GameSettingsData gameSettings)
         {
             ServerData lastServer = gameSettings.LastServer;
-            ServerData? matchingFavorite = gameSettings.Favorites.FirstOrDefault(favorite =>
-                string.Equals(favorite.IPAddress, lastServer.IPAddress) &&
-                string.Equals(favorite.Port, lastServer.Port)
-            );
+            ServerData? matchingFavorite = gameSettings.Favorites.FirstOrDefault(favorite => ServerData.Equals(favorite, lastServer));
 
             if (matchingFavorite != null)
             {

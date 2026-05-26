@@ -7,6 +7,14 @@
         public string Port { get; set; }
         public Boolean BattleEye { get; set; }
 
+        public static bool Equals(ServerData a, ServerData b)
+        {
+            if (a == null) return false;
+            if (b == null) return false;
+            return string.Equals(a.IPAddress, b.IPAddress, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(a.Port, b.Port, StringComparison.OrdinalIgnoreCase);
+        }
+
         public override string ToString()
         {
             return $"{{ Name: \"{Name}\","
