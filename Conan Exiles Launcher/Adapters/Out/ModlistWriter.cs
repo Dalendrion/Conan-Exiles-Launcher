@@ -1,23 +1,18 @@
 ﻿using Conan_Exiles_Launcher.Data;
 using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Ports.Out;
-using System.Text.Json;
 
 namespace Conan_Exiles_Launcher.Adapters.Out
 {
-    public class SavedDataWriter : ISavedDataWriter
+    public class ModlistWriter : IModlistWriter
     {
-        public void WriteSavedData(List<ImportResult> data)
+        public void WriteModlist(List<ModData> modlistData)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                
-            };
-            string json = JsonSerializer.Serialize(data, options);
-            string savedDataPath = Settings.Instance.SavedDataPath;
-            ValidateOrCreateDir(savedDataPath, () => new Exception($"Invalid saved data path {savedDataPath}."));
-            File.WriteAllText(savedDataPath, json);
+            
+            string mods = string.Join(Environment.NewLine, modlistData.Select(m => '*' + Path.Combine([Settings.Instance.WorkshopContentPath, m.ID, m.FileName])));
+            string modlistPath = Settings.Instance.ModlistPath;
+            ValidateOrCreateDir(modlistPath, () => new Exception($"Invalid modlist path {modlistPath}."));
+            File.WriteAllText(modlistPath, mods);
         }
 
         private void ValidateOrCreateDir(string path, Func<Exception> createException)

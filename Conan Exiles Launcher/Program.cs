@@ -18,7 +18,12 @@ namespace Conan_Exiles_Launcher
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            Application.Run(new Launcher(createLoadSavedDataUseCase(), createImportLastPlayedServerUseCase(), createSaveDatauseCase(), createLaunchGameUseCase()));
+            Application.Run(new Launcher(
+                createLoadSavedDataUseCase(),
+                createImportLastPlayedServerUseCase(),
+                createSaveDatauseCase(),
+                createLaunchGameUseCase()
+            ));
         }
 
         private static ILoadSavedDataUseCase createLoadSavedDataUseCase()
@@ -42,8 +47,9 @@ namespace Conan_Exiles_Launcher
 
         private static ILaunchGameUseCase createLaunchGameUseCase()
         {
+            IModlistWriter modlistWriter = new ModlistWriter();
             IGameLauncher gameLauncher = new GameLauncher();
-            return new LaunchGameUseCase(gameLauncher);
+            return new LaunchGameUseCase(modlistWriter, gameLauncher);
         }
     }
 }

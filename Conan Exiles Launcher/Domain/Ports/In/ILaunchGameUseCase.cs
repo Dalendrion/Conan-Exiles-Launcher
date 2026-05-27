@@ -4,6 +4,6 @@ namespace Conan_Exiles_Launcher.Domain.Ports.In
 {
     public interface ILaunchGameUseCase
     {
-        public void LaunchGame(ServerData serverData);
+        public Task LaunchGame(ImportResult importResult);
     }
 }

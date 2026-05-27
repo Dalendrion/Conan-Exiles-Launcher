@@ -6,16 +6,19 @@ namespace Conan_Exiles_Launcher.Domain.UseCases
 {
     public class LaunchGameUseCase : ILaunchGameUseCase
     {
+        private readonly IModlistWriter _modlistWriter;
         private readonly IGameLauncher _gameLauncher;
 
-        public LaunchGameUseCase(IGameLauncher gameLauncher)
+        public LaunchGameUseCase(IModlistWriter modlistWriter, IGameLauncher gameLauncher)
         {
+            _modlistWriter = modlistWriter;
             _gameLauncher = gameLauncher;
         }
 
-        public async void LaunchGame(ServerData serverData)
+        public async Task LaunchGame(ImportResult importResult)
         {
-            _gameLauncher.LaunchGame(serverData.BattleEye);
+            _modlistWriter.WriteModlist(importResult.Mods);
+            _gameLauncher.LaunchGame(importResult.Server.BattleEye);
         }
     }
 }

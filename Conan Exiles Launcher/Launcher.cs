@@ -1,6 +1,5 @@
 using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Ports.In;
-using System.Diagnostics;
 
 namespace Conan_Exiles_Launcher
 {
@@ -29,16 +28,11 @@ namespace Conan_Exiles_Launcher
             InitializeComponent();
         }
 
-        private void Launcher_Shown(object sender, EventArgs e)
+        private async void Launcher_Shown(object sender, EventArgs e)
         {
             try
             {
-                savedData = _loadSavedDataUseCase.LoadAsync().Result;
-
-                foreach (ImportResult result in savedData)
-                {
-                    Debug.WriteLine($"Saved Data: {result}");
-                }
+                savedData = await _loadSavedDataUseCase.LoadAsync();
             }
             catch (Exception ex)
             {
@@ -62,7 +56,7 @@ namespace Conan_Exiles_Launcher
                 matchingSavedResult = lastPlayedServer;
                 savedData.Add(lastPlayedServer);
                 savedData.Sort((a, b) => string.Compare(a.Server.Name, b.Server.Name, StringComparison.Ordinal));
-                SaveData();
+                await _saveDataUseCase.SaveData(savedData);
             }
             catch (Exception ex)
             {
@@ -78,14 +72,13 @@ namespace Conan_Exiles_Launcher
         private void btnRetry_ButtonClick(object sender, EventArgs e)
         {
             ResetErrorMessage();
-            Debug.WriteLine("Retrying...");
             retry.Invoke();
         }
 
         private async void LaunchGameButton_Click(object sender, EventArgs e)
         {
             if (lastPlayedServer == null) {
-                ShowErrorMessage("No Server Selected", null);
+                ShowErrorMessage("No Server Selected", "Select a server before trying to launch the game");
                 return;
             }
 
@@ -93,7 +86,7 @@ namespace Conan_Exiles_Launcher
 
             try
             {
-                _launchGameUseCase.LaunchGame(savedData.Last().Server);
+                await _launchGameUseCase.LaunchGame(lastPlayedServer);
             }
             catch (Exception ex)
             {
@@ -102,18 +95,6 @@ namespace Conan_Exiles_Launcher
             finally
             {
                 LaunchGameButton.Enabled = true;
-            }
-        }
-
-        private async void SaveData()
-        {
-            try
-            {
-                _saveDataUseCase.SaveData(savedData).Wait();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage("Failed to save data", ex.Message);
             }
         }
 
