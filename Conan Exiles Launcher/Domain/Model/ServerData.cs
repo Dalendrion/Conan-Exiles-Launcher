@@ -7,7 +7,7 @@
         public string Port { get; set; }
         public Boolean BattleEye { get; set; }
 
-        public static bool Equals(ServerData a, ServerData b)
+        public static bool HasSameIpAddress(ServerData a, ServerData b)
         {
             if (a == null) return false;
             if (b == null) return false;

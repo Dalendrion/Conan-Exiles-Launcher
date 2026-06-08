@@ -2,7 +2,7 @@
 using Conan_Exiles_Launcher.Data;
 using Conan_Exiles_Launcher.Domain.Ports;
 using Conan_Exiles_Launcher.Adapters.Dto;
-using Conan_Exiles_Launcher.Adapters.Dto.Files;
+using Conan_Exiles_Launcher.Adapters.Files;
 
 namespace Conan_Exiles_Launcher.Adapters
 {

@@ -1,12 +1,17 @@
 using Conan_Exiles_Launcher.Adapters;
 using Conan_Exiles_Launcher.Domain.Ports;
 using Conan_Exiles_Launcher.Domain.Services;
-using Conan_Exiles_Launcher.Domain.UseCases;
 
 namespace Conan_Exiles_Launcher.Controllers
 {
     internal static class Program
     {
+        private static ISavedDataPort SavedDataPort { get; } = new SavedDataAdapter();
+        private static IGameSettingsReaderPort GameSettingsReader { get; } = new GameSettingsReaderAdapter();
+        private static ISelectedModsReaderPort SelectedModsReader { get; } = new SelectedModsReaderAdapter();
+        private static IModlistWriterPort ModlistWriter { get; } = new ModlistWriterAdapter();
+        private static IGameLauncherPort GameLauncher { get; } = new GameLauncherAdapter();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -18,37 +23,11 @@ namespace Conan_Exiles_Launcher.Controllers
             ApplicationConfiguration.Initialize();
 
             Application.Run(new Launcher(
-                createLoadSavedDataService(),
-                createImportLastPlayedServerService(),
-                createSaveDataService(),
-                createLaunchGameService()
+                new ImportLastServerService(GameSettingsReader, SelectedModsReader, SavedDataPort),
+                new SaveDataService(SavedDataPort),
+                new LoadDataService(SavedDataPort),
+                new LaunchGameService(ModlistWriter, GameLauncher)
             ));
-        }
-
-        private static ILoadSavedDataUseCase createLoadSavedDataService()
-        {
-            ISavedDataReaderPort savedDataReader = new SavedDataReaderAdapter();
-            return new LoadSavedDataService(savedDataReader);
-        }
-
-        private static IImportLastPlayedServerUseCase createImportLastPlayedServerService()
-        {
-            IGameSettingsReaderPort gameSettingsReader = new GameSettingsReaderAdapter();
-            ISelectedModsReaderPort selectedModsReader = new SelectedModsReaderAdapter();
-            return new ImportLastServerService(gameSettingsReader, selectedModsReader);
-        }
-
-        private static ISaveDataUseCase createSaveDataService()
-        {
-            ISavedDataWriterPort savedDataWriter = new SavedDataWriterAdapter();
-            return new SaveDataService(savedDataWriter);
-        }
-
-        private static ILaunchGameUseCase createLaunchGameService()
-        {
-            IModlistWriterPort modlistWriter = new ModlistWriterAdapter();
-            IGameLauncherPort gameLauncher = new GameLauncherAdapter();
-            return new LaunchGameService(modlistWriter, gameLauncher);
         }
     }
 }

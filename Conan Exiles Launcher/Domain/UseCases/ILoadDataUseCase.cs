@@ -2,7 +2,7 @@
 
 namespace Conan_Exiles_Launcher.Domain.UseCases
 {
-    public interface ILoadSavedDataUseCase
+    public interface ILoadDataUseCase
     {
         public Task<List<ImportResult>> LoadAsync();
     }

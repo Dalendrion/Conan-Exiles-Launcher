@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Conan_Exiles_Launcher.Adapters.Dto.Files
+namespace Conan_Exiles_Launcher.Adapters.Files
 {
     public class FileLineReader
     {

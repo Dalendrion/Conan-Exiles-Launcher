@@ -4,6 +4,6 @@ namespace Conan_Exiles_Launcher.Domain.UseCases
 {
     public interface ISaveDataUseCase
     {
-        public Task SaveData(List<ImportResult> data);
+        public Task<ImportResult> SaveServer(ImportResult importResult);
     }
 }

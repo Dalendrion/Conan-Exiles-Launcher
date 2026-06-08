@@ -1,30 +1,49 @@
+using Conan_Exiles_Launcher.Controllers.Dto;
+using Conan_Exiles_Launcher.Controllers.Mappers;
 using Conan_Exiles_Launcher.Domain.Model;
+using Conan_Exiles_Launcher.Domain.Services;
 using Conan_Exiles_Launcher.Domain.UseCases;
-using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Conan_Exiles_Launcher.Controllers
 {
     public partial class Launcher : Form
     {
-        private readonly ILoadSavedDataUseCase _loadSavedDataUseCase;
         private readonly IImportLastPlayedServerUseCase _importLastPlayedServerUseCase;
         private readonly ISaveDataUseCase _saveDataUseCase;
+        private readonly ILoadDataUseCase _loadDataUseCase;
         private readonly ILaunchGameUseCase _launchGameUseCase;
 
         private Action retry;
 
-        private List<ImportResult?> savedData;
-        private ImportResult? lastPlayedServer;
-        private ImportResult? selectedServer;
+        private BindingList<ImportResultDto> savedData;
 
-        public Launcher(ILoadSavedDataUseCase loadSavedDataUseCase,
-                        IImportLastPlayedServerUseCase importLastPlayedServerUseCase,
+        private ImportResultDto? selectedItem;
+        private ImportResultDto? SelectedServer
+        {
+            get
+            {
+                return selectedItem;
+            }
+            set
+            {
+                selectedItem = value;
+                serverDataPanel.Enabled = value != null;
+
+                ServerNameTextBox.Text = value?.Server.Name ?? "";
+                ServerIPTextBox.Text = value?.IPAddress ?? "";
+                ServerBattleEyeCheckBox.Checked = value?.Server.BattleEye ?? false;
+            }
+        }
+
+        public Launcher(IImportLastPlayedServerUseCase importLastPlayedServerUseCase,
                         ISaveDataUseCase saveDataUseCase,
+                        ILoadDataUseCase loadDataUseCase,
                         ILaunchGameUseCase launchGameUseCase)
         {
-            _loadSavedDataUseCase = loadSavedDataUseCase ?? throw new ArgumentNullException(nameof(loadSavedDataUseCase));
             _importLastPlayedServerUseCase = importLastPlayedServerUseCase ?? throw new ArgumentNullException(nameof(importLastPlayedServerUseCase));
             _saveDataUseCase = saveDataUseCase ?? throw new ArgumentNullException(nameof(saveDataUseCase));
+            _loadDataUseCase = loadDataUseCase ?? throw new ArgumentNullException(nameof(loadDataUseCase));
             _launchGameUseCase = launchGameUseCase ?? throw new ArgumentNullException(nameof(launchGameUseCase));
 
             InitializeComponent();
@@ -34,15 +53,7 @@ namespace Conan_Exiles_Launcher.Controllers
         {
             try
             {
-                savedData = await _loadSavedDataUseCase.LoadAsync();
-
-                serverListBox.DisplayMember = "ServerName";
-                serverListBox.DataSource = savedData;
-
-                foreach (ImportResult? i in savedData)
-                {
-                    Debug.WriteLine(i);
-                }
+                UpdateServerList();
             }
             catch (Exception ex)
             {
@@ -57,17 +68,18 @@ namespace Conan_Exiles_Launcher.Controllers
 
             try
             {
-                lastPlayedServer = await _importLastPlayedServerUseCase.ImportAsync();
-                ImportResult? matchingSavedResult = savedData.FirstOrDefault(s => ServerData.Equals(s.Server, lastPlayedServer.Server));
+                ImportResultDto lastPlayedServer = ImportResultMapper.ToDto(await _importLastPlayedServerUseCase.ImportAsync());
+                UpdateServerList();
+
+                ImportResultDto? matchingSavedResult = savedData.FirstOrDefault(s => ServerDataDto.HasSameIpAddress(s.Server, lastPlayedServer.Server));
                 if (matchingSavedResult != null)
                 {
                     savedData.Remove(matchingSavedResult);
                 }
-                matchingSavedResult = lastPlayedServer;
-                savedData.Add(lastPlayedServer);
-                List<ImportResult> filteredData = (List<ImportResult>) savedData.FindAll(x => x != null);
-                filteredData.Sort((a, b) => string.Compare(a.Server.Name, b.Server.Name, StringComparison.Ordinal));
-                await _saveDataUseCase.SaveData(filteredData);
+                SelectedServer = lastPlayedServer;
+                serverListBox.SelectedItem = lastPlayedServer;
+
+                UpdateServerList();
             }
             catch (Exception ex)
             {
@@ -88,7 +100,7 @@ namespace Conan_Exiles_Launcher.Controllers
 
         private async void LaunchGameButton_Click(object sender, EventArgs e)
         {
-            if (selectedServer == null)
+            if (SelectedServer == null)
             {
                 ShowErrorMessage("No Server Selected", "Select a server before trying to launch the game");
                 return;
@@ -98,7 +110,7 @@ namespace Conan_Exiles_Launcher.Controllers
 
             try
             {
-                await _launchGameUseCase.LaunchGame(selectedServer);
+                await _launchGameUseCase.LaunchGame(ImportResultMapper.FromDto(SelectedServer));
             }
             catch (Exception ex)
             {
@@ -135,16 +147,73 @@ namespace Conan_Exiles_Launcher.Controllers
 
         private void serverListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ImportResult? selectedItem = (ImportResult) serverListBox.SelectedItem;
+            SelectedServer = (ImportResultDto)serverListBox.SelectedItem;
 
-            ServerNameTextBox.Enabled = selectedItem != null;
-            ServerIPTextBox.Enabled = selectedItem != null;
-            ServerBattleEyeCheckBox.Enabled = selectedItem != null;
-            LaunchGameButton.Enabled = selectedItem != null;
+            
+        }
 
-            ServerNameTextBox.Text = selectedItem?.Server.Name ?? "";
-            ServerIPTextBox.Text = selectedItem?.IPAddress ?? "";
-            ServerBattleEyeCheckBox.Checked = selectedItem?.Server.BattleEye ?? false;
+        private async void SaveServerButton_Click(object sender, EventArgs e)
+        {
+            if (SelectedServer == null) return;
+            if (savedData == null) return;
+
+            SaveServerButton.Enabled = false;
+
+            try
+            {
+                SelectedServer.Server.Name = ServerNameTextBox.Text;
+                SelectedServer.IPAddress = ServerIPTextBox.Text;
+                SelectedServer.Server.BattleEye = ServerBattleEyeCheckBox.Checked;
+                
+
+                ImportResult r = await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(SelectedServer));
+                ImportResultDto dto = ImportResultMapper.ToDto(r);
+                if (savedData.ToList().Find(i => Guid.Equals(i.Guid, dto.Guid)) == null)
+                {
+                    savedData.Add(dto);
+                }
+
+                UpdateServerList();
+                SelectedServer = dto;
+                serverListBox.SelectedItem = dto;
+            }
+            catch (InvalidServerDataException ex)
+            {
+                ipAddressErrorProvider.SetError(ServerIPTextBox, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Failed to save server data", ex.Message);
+                return;
+            }
+            finally
+            {
+                SaveServerButton.Enabled = true;
+            }
+        }
+
+        private void ServerIPTextBox_TextChanged(object sender, EventArgs e)
+        {
+            ipAddressErrorProvider.Clear();
+        }
+
+        private void AddServerButton_Click(object sender, EventArgs e)
+        {
+            serverListBox.SelectedIndex = -1;
+            SelectedServer = new ImportResultDto(new ServerDataDto { Name = "New Server" }, new List<ModDataDto>());
+
+            serverDataPanel.Enabled = true;
+        }
+
+        private async void UpdateServerList()
+        {
+            List<ImportResultDto> importResultsDto = (await _loadDataUseCase.LoadAsync()).Select(ImportResultMapper.ToDto).ToList();
+            importResultsDto.Sort((a, b) => string.Compare(a.Server.Name, b.Server.Name, StringComparison.Ordinal));
+            savedData = new BindingList<ImportResultDto>(importResultsDto);
+
+            serverListBox.DisplayMember = "ServerName";
+            serverListBox.DataSource = savedData;
+            serverListBox.SelectedItem = SelectedServer;
         }
     }
 }
