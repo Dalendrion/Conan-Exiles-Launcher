@@ -11,6 +11,7 @@ namespace Conan_Exiles_Launcher.Controllers
         private static ISelectedModsReaderPort SelectedModsReader { get; } = new SelectedModsReaderAdapter();
         private static IModlistWriterPort ModlistWriter { get; } = new ModlistWriterAdapter();
         private static IGameLauncherPort GameLauncher { get; } = new GameLauncherAdapter();
+        private static ISettingsPort SettingsPort { get; } = new SettingsAdapter();
 
         /// <summary>
         ///  The main entry point for the application.
@@ -26,7 +27,8 @@ namespace Conan_Exiles_Launcher.Controllers
                 new ImportLastServerService(GameSettingsReader, SelectedModsReader, SavedDataPort),
                 new SaveDataService(SavedDataPort),
                 new LoadDataService(SavedDataPort),
-                new LaunchGameService(ModlistWriter, GameLauncher)
+                new LaunchGameService(ModlistWriter, GameLauncher),
+                new SaveDirectoriesService(SettingsPort)
             ));
         }
     }

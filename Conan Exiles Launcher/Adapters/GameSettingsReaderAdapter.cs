@@ -1,8 +1,8 @@
 ﻿using Conan_Exiles_Launcher.Domain.Model;
-using Conan_Exiles_Launcher.Data;
 using Conan_Exiles_Launcher.Domain.Ports;
 using Conan_Exiles_Launcher.Adapters.Dto;
 using Conan_Exiles_Launcher.Adapters.Files;
+using Conan_Exiles_Launcher.Properties;
 
 namespace Conan_Exiles_Launcher.Adapters
 {
@@ -13,7 +13,7 @@ namespace Conan_Exiles_Launcher.Adapters
             GameSettingsData gameSettings = new GameSettingsData();
             FileLineProcessor lineProcessor = new GameIniFileLineProcessor(gameSettings);
             FileLineReader fileLineReader = new FileLineReader(lineProcessor);
-            fileLineReader.ReadFile(Settings.Instance.GameIniPath);
+            fileLineReader.ReadFile(Settings.Default.SteamPath + Settings.Default.GameIni);
             return gameSettings;
         }
     }

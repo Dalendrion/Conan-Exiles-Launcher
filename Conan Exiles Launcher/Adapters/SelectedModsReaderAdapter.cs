@@ -1,7 +1,7 @@
 ﻿using Conan_Exiles_Launcher.Domain.Model;
-using Conan_Exiles_Launcher.Data;
 using Conan_Exiles_Launcher.Domain.Ports;
 using Conan_Exiles_Launcher.Adapters.Files;
+using Conan_Exiles_Launcher.Properties;
 
 namespace Conan_Exiles_Launcher.Adapters
 {
@@ -12,7 +12,7 @@ namespace Conan_Exiles_Launcher.Adapters
             List<ModData> selectedMods = new List<ModData>();
             FileLineProcessor processor = new SelectedModsFileLineProcessor(selectedMods);
             FileLineReader fileLineReader = new FileLineReader(processor);
-            fileLineReader.ReadFile(Settings.Instance.ServerModlistPath);
+            fileLineReader.ReadFile(Settings.Default.SteamPath + Settings.Default.ServermodlistPath);
             return selectedMods;
         }
     }

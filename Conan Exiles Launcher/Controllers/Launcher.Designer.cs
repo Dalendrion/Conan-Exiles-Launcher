@@ -49,11 +49,22 @@
             ServerNameTextBox = new TextBox();
             label3 = new Label();
             modsTab = new TabPage();
+            settingsTab = new TabPage();
+            panel1 = new Panel();
+            saveDataBrowseButton = new Button();
+            steamPathBrowseButton = new Button();
+            button1 = new Button();
+            label4 = new Label();
+            savedDataPathTextBox = new TextBox();
+            steamPathTextBox = new TextBox();
+            label5 = new Label();
             ModOrderTooltip = new ToolTip(components);
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             btnRetry = new ToolStripSplitButton();
             ipAddressErrorProvider = new ErrorProvider(components);
+            steamPathBrowserDialog = new FolderBrowserDialog();
+            savedDataBrowserDialog = new FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -64,6 +75,8 @@
             tabControl1.SuspendLayout();
             serverTab.SuspendLayout();
             serverDataPanel.SuspendLayout();
+            settingsTab.SuspendLayout();
+            panel1.SuspendLayout();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ipAddressErrorProvider).BeginInit();
             SuspendLayout();
@@ -185,6 +198,7 @@
             resources.ApplyResources(tabControl1, "tabControl1");
             tabControl1.Controls.Add(serverTab);
             tabControl1.Controls.Add(modsTab);
+            tabControl1.Controls.Add(settingsTab);
             ipAddressErrorProvider.SetError(tabControl1, resources.GetString("tabControl1.Error"));
             ipAddressErrorProvider.SetIconAlignment(tabControl1, (ErrorIconAlignment)resources.GetObject("tabControl1.IconAlignment"));
             ipAddressErrorProvider.SetIconPadding(tabControl1, (int)resources.GetObject("tabControl1.IconPadding"));
@@ -305,6 +319,108 @@
             ModOrderTooltip.SetToolTip(modsTab, resources.GetString("modsTab.ToolTip"));
             modsTab.UseVisualStyleBackColor = true;
             // 
+            // settingsTab
+            // 
+            resources.ApplyResources(settingsTab, "settingsTab");
+            settingsTab.BorderStyle = BorderStyle.FixedSingle;
+            settingsTab.Controls.Add(panel1);
+            ipAddressErrorProvider.SetError(settingsTab, resources.GetString("settingsTab.Error"));
+            ipAddressErrorProvider.SetIconAlignment(settingsTab, (ErrorIconAlignment)resources.GetObject("settingsTab.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(settingsTab, (int)resources.GetObject("settingsTab.IconPadding"));
+            settingsTab.Name = "settingsTab";
+            ModOrderTooltip.SetToolTip(settingsTab, resources.GetString("settingsTab.ToolTip"));
+            settingsTab.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(panel1, "panel1");
+            panel1.Controls.Add(saveDataBrowseButton);
+            panel1.Controls.Add(steamPathBrowseButton);
+            panel1.Controls.Add(button1);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(savedDataPathTextBox);
+            panel1.Controls.Add(steamPathTextBox);
+            panel1.Controls.Add(label5);
+            ipAddressErrorProvider.SetError(panel1, resources.GetString("panel1.Error"));
+            ipAddressErrorProvider.SetIconAlignment(panel1, (ErrorIconAlignment)resources.GetObject("panel1.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(panel1, (int)resources.GetObject("panel1.IconPadding"));
+            panel1.Name = "panel1";
+            ModOrderTooltip.SetToolTip(panel1, resources.GetString("panel1.ToolTip"));
+            // 
+            // saveDataBrowseButton
+            // 
+            resources.ApplyResources(saveDataBrowseButton, "saveDataBrowseButton");
+            saveDataBrowseButton.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(saveDataBrowseButton, resources.GetString("saveDataBrowseButton.Error"));
+            ipAddressErrorProvider.SetIconAlignment(saveDataBrowseButton, (ErrorIconAlignment)resources.GetObject("saveDataBrowseButton.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(saveDataBrowseButton, (int)resources.GetObject("saveDataBrowseButton.IconPadding"));
+            saveDataBrowseButton.Name = "saveDataBrowseButton";
+            ModOrderTooltip.SetToolTip(saveDataBrowseButton, resources.GetString("saveDataBrowseButton.ToolTip"));
+            saveDataBrowseButton.UseVisualStyleBackColor = false;
+            saveDataBrowseButton.Click += saveDataBrowseButton_Click;
+            // 
+            // steamPathBrowseButton
+            // 
+            resources.ApplyResources(steamPathBrowseButton, "steamPathBrowseButton");
+            steamPathBrowseButton.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(steamPathBrowseButton, resources.GetString("steamPathBrowseButton.Error"));
+            ipAddressErrorProvider.SetIconAlignment(steamPathBrowseButton, (ErrorIconAlignment)resources.GetObject("steamPathBrowseButton.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(steamPathBrowseButton, (int)resources.GetObject("steamPathBrowseButton.IconPadding"));
+            steamPathBrowseButton.Name = "steamPathBrowseButton";
+            ModOrderTooltip.SetToolTip(steamPathBrowseButton, resources.GetString("steamPathBrowseButton.ToolTip"));
+            steamPathBrowseButton.UseVisualStyleBackColor = false;
+            steamPathBrowseButton.Click += steamPathBrowseButton_Click;
+            // 
+            // button1
+            // 
+            resources.ApplyResources(button1, "button1");
+            button1.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(button1, resources.GetString("button1.Error"));
+            ipAddressErrorProvider.SetIconAlignment(button1, (ErrorIconAlignment)resources.GetObject("button1.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(button1, (int)resources.GetObject("button1.IconPadding"));
+            button1.Name = "button1";
+            ModOrderTooltip.SetToolTip(button1, resources.GetString("button1.ToolTip"));
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(label4, "label4");
+            ipAddressErrorProvider.SetError(label4, resources.GetString("label4.Error"));
+            ipAddressErrorProvider.SetIconAlignment(label4, (ErrorIconAlignment)resources.GetObject("label4.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(label4, (int)resources.GetObject("label4.IconPadding"));
+            label4.Name = "label4";
+            ModOrderTooltip.SetToolTip(label4, resources.GetString("label4.ToolTip"));
+            // 
+            // savedDataPathTextBox
+            // 
+            resources.ApplyResources(savedDataPathTextBox, "savedDataPathTextBox");
+            savedDataPathTextBox.BorderStyle = BorderStyle.FixedSingle;
+            ipAddressErrorProvider.SetError(savedDataPathTextBox, resources.GetString("savedDataPathTextBox.Error"));
+            ipAddressErrorProvider.SetIconAlignment(savedDataPathTextBox, (ErrorIconAlignment)resources.GetObject("savedDataPathTextBox.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(savedDataPathTextBox, (int)resources.GetObject("savedDataPathTextBox.IconPadding"));
+            savedDataPathTextBox.Name = "savedDataPathTextBox";
+            ModOrderTooltip.SetToolTip(savedDataPathTextBox, resources.GetString("savedDataPathTextBox.ToolTip"));
+            // 
+            // steamPathTextBox
+            // 
+            resources.ApplyResources(steamPathTextBox, "steamPathTextBox");
+            steamPathTextBox.BorderStyle = BorderStyle.FixedSingle;
+            ipAddressErrorProvider.SetError(steamPathTextBox, resources.GetString("steamPathTextBox.Error"));
+            ipAddressErrorProvider.SetIconAlignment(steamPathTextBox, (ErrorIconAlignment)resources.GetObject("steamPathTextBox.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(steamPathTextBox, (int)resources.GetObject("steamPathTextBox.IconPadding"));
+            steamPathTextBox.Name = "steamPathTextBox";
+            ModOrderTooltip.SetToolTip(steamPathTextBox, resources.GetString("steamPathTextBox.ToolTip"));
+            // 
+            // label5
+            // 
+            resources.ApplyResources(label5, "label5");
+            ipAddressErrorProvider.SetError(label5, resources.GetString("label5.Error"));
+            ipAddressErrorProvider.SetIconAlignment(label5, (ErrorIconAlignment)resources.GetObject("label5.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(label5, (int)resources.GetObject("label5.IconPadding"));
+            label5.Name = "label5";
+            ModOrderTooltip.SetToolTip(label5, resources.GetString("label5.ToolTip"));
+            // 
             // ModOrderTooltip
             // 
             ModOrderTooltip.ToolTipTitle = "Mod Order";
@@ -344,6 +460,16 @@
             ipAddressErrorProvider.ContainerControl = this;
             resources.ApplyResources(ipAddressErrorProvider, "ipAddressErrorProvider");
             // 
+            // steamPathBrowserDialog
+            // 
+            resources.ApplyResources(steamPathBrowserDialog, "steamPathBrowserDialog");
+            steamPathBrowserDialog.InitialDirectory = "%HOME%";
+            // 
+            // savedDataBrowserDialog
+            // 
+            resources.ApplyResources(savedDataBrowserDialog, "savedDataBrowserDialog");
+            savedDataBrowserDialog.InitialDirectory = "%HOME%";
+            // 
             // Launcher
             // 
             resources.ApplyResources(this, "$this");
@@ -371,6 +497,9 @@
             serverTab.ResumeLayout(false);
             serverDataPanel.ResumeLayout(false);
             serverDataPanel.PerformLayout();
+            settingsTab.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ipAddressErrorProvider).EndInit();
@@ -403,5 +532,16 @@
         private Panel panel2;
         private Button SaveServerButton;
         private ErrorProvider ipAddressErrorProvider;
+        private TabPage settingsTab;
+        private Panel panel1;
+        private Button button1;
+        private Label label4;
+        private TextBox savedDataPathTextBox;
+        private TextBox steamPathTextBox;
+        private Label label5;
+        private Button saveDataBrowseButton;
+        private Button steamPathBrowseButton;
+        private FolderBrowserDialog steamPathBrowserDialog;
+        private FolderBrowserDialog savedDataBrowserDialog;
     }
 }

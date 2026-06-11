@@ -1,6 +1,6 @@
-﻿using Conan_Exiles_Launcher.Data;
-using Conan_Exiles_Launcher.Domain.Model;
+﻿using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Ports;
+using Conan_Exiles_Launcher.Properties;
 
 namespace Conan_Exiles_Launcher.Adapters
 {
@@ -9,8 +9,8 @@ namespace Conan_Exiles_Launcher.Adapters
         public void WriteModlist(List<ModData> modlistData)
         {
             
-            string mods = string.Join(Environment.NewLine, modlistData.Select(m => '*' + Path.Combine([Settings.Instance.WorkshopContentPath, m.ID, m.FileName])));
-            string modlistPath = Settings.Instance.ModlistPath;
+            string mods = string.Join(Environment.NewLine, modlistData.Select(m => '*' + Path.Combine([Settings.Default.SteamPath + Settings.Default.WorkshopContent, m.ID, m.FileName])));
+            string modlistPath = Settings.Default.SteamPath + Settings.Default.ModlistPath;
             ValidateOrCreateDir(modlistPath, () => new Exception($"Invalid modlist path {modlistPath}."));
             File.WriteAllText(modlistPath, mods);
         }

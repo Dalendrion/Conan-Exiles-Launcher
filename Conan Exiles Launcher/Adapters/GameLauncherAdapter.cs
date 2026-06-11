@@ -1,6 +1,6 @@
-﻿using Conan_Exiles_Launcher.Data;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Conan_Exiles_Launcher.Domain.Ports;
+using Conan_Exiles_Launcher.Properties;
 
 namespace Conan_Exiles_Launcher.Adapters
 {
@@ -10,11 +10,11 @@ namespace Conan_Exiles_Launcher.Adapters
         {
             if (battleEye)
             {
-                Process.Start(Settings.Instance.BattleEyeExecutablePath);
+                Process.Start(Settings.Default.SteamPath + Settings.Default.SandboxBattleEyeExecutable);
             }
             else
             {
-                Process.Start(Settings.Instance.SandboxExecutablePath);
+                Process.Start(Settings.Default.SteamPath + Settings.Default.SandboxExecutable);
             }
         }
     }

@@ -3,6 +3,7 @@ using Conan_Exiles_Launcher.Controllers.Mappers;
 using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Services;
 using Conan_Exiles_Launcher.Domain.UseCases;
+using Conan_Exiles_Launcher.Properties;
 using System.ComponentModel;
 
 namespace Conan_Exiles_Launcher.Controllers
@@ -13,6 +14,7 @@ namespace Conan_Exiles_Launcher.Controllers
         private readonly ISaveDataUseCase _saveDataUseCase;
         private readonly ILoadDataUseCase _loadDataUseCase;
         private readonly ILaunchGameUseCase _launchGameUseCase;
+        private readonly ISaveDirectoriesUseCase _saveDirectoriesUseCase;
 
         private Action retry;
 
@@ -39,12 +41,14 @@ namespace Conan_Exiles_Launcher.Controllers
         public Launcher(IImportLastPlayedServerUseCase importLastPlayedServerUseCase,
                         ISaveDataUseCase saveDataUseCase,
                         ILoadDataUseCase loadDataUseCase,
-                        ILaunchGameUseCase launchGameUseCase)
+                        ILaunchGameUseCase launchGameUseCase,
+                        ISaveDirectoriesUseCase saveDirectoriesUseCase)
         {
             _importLastPlayedServerUseCase = importLastPlayedServerUseCase ?? throw new ArgumentNullException(nameof(importLastPlayedServerUseCase));
             _saveDataUseCase = saveDataUseCase ?? throw new ArgumentNullException(nameof(saveDataUseCase));
             _loadDataUseCase = loadDataUseCase ?? throw new ArgumentNullException(nameof(loadDataUseCase));
             _launchGameUseCase = launchGameUseCase ?? throw new ArgumentNullException(nameof(launchGameUseCase));
+            _saveDirectoriesUseCase = saveDirectoriesUseCase ?? throw new ArgumentNullException(nameof(saveDirectoriesUseCase));
 
             InitializeComponent();
         }
@@ -53,6 +57,9 @@ namespace Conan_Exiles_Launcher.Controllers
         {
             try
             {
+                steamPathTextBox.Text = Settings.Default.SteamPath;
+                savedDataPathTextBox.Text = Settings.Default.SavedDataPath;
+
                 UpdateServerList();
             }
             catch (Exception ex)
@@ -148,8 +155,6 @@ namespace Conan_Exiles_Launcher.Controllers
         private void serverListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedServer = (ImportResultDto)serverListBox.SelectedItem;
-
-            
         }
 
         private async void SaveServerButton_Click(object sender, EventArgs e)
@@ -164,7 +169,7 @@ namespace Conan_Exiles_Launcher.Controllers
                 SelectedServer.Server.Name = ServerNameTextBox.Text;
                 SelectedServer.IPAddress = ServerIPTextBox.Text;
                 SelectedServer.Server.BattleEye = ServerBattleEyeCheckBox.Checked;
-                
+
 
                 ImportResult r = await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(SelectedServer));
                 ImportResultDto dto = ImportResultMapper.ToDto(r);
@@ -214,6 +219,31 @@ namespace Conan_Exiles_Launcher.Controllers
             serverListBox.DisplayMember = "ServerName";
             serverListBox.DataSource = savedData;
             serverListBox.SelectedItem = SelectedServer;
+        }
+
+        private void steamPathBrowseButton_Click(object sender, EventArgs e)
+        {
+            steamPathBrowserDialog.SelectedPath = steamPathTextBox.Text;
+            DialogResult dialogResult = steamPathBrowserDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                steamPathTextBox.Text = steamPathBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void saveDataBrowseButton_Click(object sender, EventArgs e)
+        {
+            savedDataBrowserDialog.SelectedPath = savedDataPathTextBox.Text;
+            DialogResult dialogResult = savedDataBrowserDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                savedDataPathTextBox.Text = savedDataBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _saveDirectoriesUseCase.SaveDirectories(new SettingsData(steamPathTextBox.Text, savedDataPathTextBox.Text));
         }
     }
 }

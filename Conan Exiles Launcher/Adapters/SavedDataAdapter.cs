@@ -1,6 +1,6 @@
-﻿using Conan_Exiles_Launcher.Data;
-using Conan_Exiles_Launcher.Domain.Model;
+﻿using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Ports;
+using Conan_Exiles_Launcher.Properties;
 using System.Text.Json;
 
 namespace Conan_Exiles_Launcher.Adapters
@@ -15,7 +15,7 @@ namespace Conan_Exiles_Launcher.Adapters
             {
                 try
                 {
-                    string rawSavedData = File.ReadAllText(Settings.Instance.SavedDataPath);
+                    string rawSavedData = File.ReadAllText(Settings.Default.SavedDataPath + Settings.Default.SavedDataFile);
                     _savedData = JsonSerializer.Deserialize<List<ImportResult>>(rawSavedData) ?? new List<ImportResult>();
                 }
                 catch (FileNotFoundException ex)
@@ -59,7 +59,7 @@ namespace Conan_Exiles_Launcher.Adapters
                 WriteIndented = true,
             };
             string json = JsonSerializer.Serialize(importResults, options);
-            string savedDataPath = Settings.Instance.SavedDataPath;
+            string savedDataPath = Settings.Default.SavedDataPath + Settings.Default.SavedDataFile;
             ValidateOrCreateDir(savedDataPath, () => new Exception($"Invalid saved data path {savedDataPath}."));
             File.WriteAllText(savedDataPath, json);
         }

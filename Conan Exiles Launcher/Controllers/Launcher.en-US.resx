@@ -307,6 +307,9 @@
   <data name="SaveServerButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="SaveServerButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>507, 183</value>
+  </data>
   <data name="SaveServerButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 3, 4, 3</value>
   </data>
@@ -356,7 +359,7 @@
     <value>4, 3, 4, 3</value>
   </data>
   <data name="LaunchGameButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 74</value>
+    <value>622, 74</value>
   </data>
   <data name="LaunchGameButton.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -365,10 +368,10 @@
     <value>Launch Game</value>
   </data>
   <data name="ServerIPTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 32</value>
+    <value>622, 32</value>
   </data>
   <data name="ServerNameTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 32</value>
+    <value>622, 32</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>17, 98</value>
@@ -388,8 +391,11 @@
   <data name="serverDataPanel.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="serverDataPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>65, 107</value>
+  </data>
   <data name="serverDataPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 420</value>
+    <value>672, 404</value>
   </data>
   <data name="serverTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -409,6 +415,129 @@
   <data name="modsTab.Text" xml:space="preserve">
     <value>Mods</value>
   </data>
+  <data name="panel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="saveDataBrowseButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="saveDataBrowseButton.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="saveDataBrowseButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="saveDataBrowseButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>540, 124</value>
+  </data>
+  <data name="saveDataBrowseButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 3, 4, 3</value>
+  </data>
+  <data name="saveDataBrowseButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 35</value>
+  </data>
+  <data name="saveDataBrowseButton.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="steamPathBrowseButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="steamPathBrowseButton.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="steamPathBrowseButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="steamPathBrowseButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>540, 45</value>
+  </data>
+  <data name="steamPathBrowseButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 3, 4, 3</value>
+  </data>
+  <data name="steamPathBrowseButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 35</value>
+  </data>
+  <data name="steamPathBrowseButton.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="button1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="button1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>507, 183</value>
+  </data>
+  <data name="button1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 3, 4, 3</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 35</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 19</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 23</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>SteamLibrary Path:</value>
+  </data>
+  <data name="savedDataPathTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>516, 32</value>
+  </data>
+  <data name="steamPathTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>516, 32</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 23</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Save Data To:</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>65, 107</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>672, 404</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="settingsTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="settingsTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>793, 649</value>
+  </data>
+  <data name="settingsTab.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="tabControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -422,10 +551,10 @@
     <value>13</value>
   </data>
   <data name="tableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+    <value>Left</value>
   </data>
   <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>807, 731</value>
@@ -444,5 +573,11 @@
   </data>
   <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
+  </data>
+  <data name="steamPathBrowserDialog.Description" xml:space="preserve">
+    <value>Select SteamLibrary folder</value>
+  </data>
+  <data name="savedDataBrowserDialog.Description" xml:space="preserve">
+    <value>Select folder for saved data</value>
   </data>
 </root>
