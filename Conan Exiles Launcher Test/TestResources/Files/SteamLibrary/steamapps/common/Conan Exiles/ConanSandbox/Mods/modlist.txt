@@ -1,0 +1,5 @@
+*C:\Users\avermaas\Desktop\SteamLibrary\steamapps\workshop\content\440900\3722388367\ModControlPanel.pak
+*C:\Users\avermaas\Desktop\SteamLibrary\steamapps\workshop\content\440900\3720904511\BetterThralls.pak
+*C:\Users\avermaas\Desktop\SteamLibrary\steamapps\workshop\content\440900\3721926604\HighmanesArsenal.pak
+*C:\Users\avermaas\Desktop\SteamLibrary\steamapps\workshop\content\440900\3721090132\ModAdmin.pak
+*C:\Users\avermaas\Desktop\SteamLibrary\steamapps\workshop\content\440900\3721096154\TotCustom.pak

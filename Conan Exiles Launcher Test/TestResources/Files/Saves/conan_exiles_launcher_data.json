@@ -1,0 +1,21 @@
+[
+	{
+		"Server": {
+			"Name": "Server 1",
+			"IPAddress": "123.123.123.101",
+			"Port": "29100",
+			"Password": "",
+			"BattleEye": false
+		},
+		"Mods": [
+			{
+				"FileName": "ModControlPanel.pak",
+				"ID": "3722388367"
+			},
+			{
+				"FileName": "ModAdmin.pak",
+				"ID": "3721090132"
+			}
+		]
+	}
+]

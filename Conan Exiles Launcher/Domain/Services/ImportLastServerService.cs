@@ -5,23 +5,23 @@ using Conan_Exiles_Launcher.Domain.UseCases;
 
 namespace Conan_Exiles_Launcher.Domain.Services
 {
-    internal class ImportLastServerService : IImportLastPlayedServerUseCase
+    public class ImportLastServerService : IImportLastPlayedServerUseCase
     {
-        private readonly IGameSettingsReaderPort _gameSettingsReader;
-        private readonly ISelectedModsReaderPort _selectedModsReader;
+        private readonly IGameSettingsReaderPort _gameSettingsReaderPort;
+        private readonly ISelectedModsReaderPort _selectedModsReaderPort;
         private readonly ISavedDataPort _savedDataPort;
 
-        public ImportLastServerService(IGameSettingsReaderPort gameSettingsReader, ISelectedModsReaderPort selectedModsReader, ISavedDataPort savedDataPort)
+        public ImportLastServerService(IGameSettingsReaderPort gameSettingsReaderPort, ISelectedModsReaderPort selectedModsReaderPort, ISavedDataPort savedDataPort)
         {
-            _gameSettingsReader = gameSettingsReader;
-            _selectedModsReader = selectedModsReader;
+            _gameSettingsReaderPort = gameSettingsReaderPort;
+            _selectedModsReaderPort = selectedModsReaderPort;
             _savedDataPort = savedDataPort;
         }
 
         public async Task<ImportResult> ImportAsync()
         {
-            GameSettingsData gameSettings = _gameSettingsReader.ReadGameSettings();
-            List<ModData> selectedMods = _selectedModsReader.ReadSelectedMods();
+            GameSettingsData gameSettings = _gameSettingsReaderPort.ReadGameSettings();
+            List<ModData> selectedMods = _selectedModsReaderPort.ReadSelectedMods();
             ServerData lastServer = GetServerData(gameSettings);
             ImportResult importResult = FindOrCreateImportResult(lastServer, selectedMods);
             _savedDataPort.SaveImportResult(importResult);

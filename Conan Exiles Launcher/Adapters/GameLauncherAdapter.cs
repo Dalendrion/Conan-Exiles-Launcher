@@ -4,7 +4,7 @@ using Conan_Exiles_Launcher.Properties;
 
 namespace Conan_Exiles_Launcher.Adapters
 {
-    internal class GameLauncherAdapter : IGameLauncherPort
+    public class GameLauncherAdapter : IGameLauncherPort
     {
         public void LaunchGame(bool battleEye)
         {
