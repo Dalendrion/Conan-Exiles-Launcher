@@ -49,6 +49,24 @@
             ServerNameTextBox = new TextBox();
             label3 = new Label();
             modsTab = new TabPage();
+            panel7 = new Panel();
+            refreshModsButton = new Button();
+            tableLayoutPanel3 = new TableLayoutPanel();
+            tableLayoutPanel4 = new TableLayoutPanel();
+            modSelectButton = new Button();
+            modDeselectButton = new Button();
+            tableLayoutPanel5 = new TableLayoutPanel();
+            modMoveUp = new Button();
+            modMoveDown = new Button();
+            panel4 = new Panel();
+            availableModsListBox = new ListBox();
+            label6 = new Label();
+            panel5 = new Panel();
+            panel6 = new Panel();
+            selectedModsListBox = new ListBox();
+            label7 = new Label();
+            panel3 = new Panel();
+            saveModsButton = new Button();
             settingsTab = new TabPage();
             panel1 = new Panel();
             saveDataBrowseButton = new Button();
@@ -65,6 +83,8 @@
             ipAddressErrorProvider = new ErrorProvider(components);
             steamPathBrowserDialog = new FolderBrowserDialog();
             savedDataBrowserDialog = new FolderBrowserDialog();
+            dualList1 = new DualList(components);
+            modsDualList = new DualList(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -75,6 +95,15 @@
             tabControl1.SuspendLayout();
             serverTab.SuspendLayout();
             serverDataPanel.SuspendLayout();
+            modsTab.SuspendLayout();
+            panel7.SuspendLayout();
+            tableLayoutPanel3.SuspendLayout();
+            tableLayoutPanel4.SuspendLayout();
+            tableLayoutPanel5.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            panel6.SuspendLayout();
+            panel3.SuspendLayout();
             settingsTab.SuspendLayout();
             panel1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -167,6 +196,7 @@
             ipAddressErrorProvider.SetIconAlignment(serverListBox, (ErrorIconAlignment)resources.GetObject("serverListBox.IconAlignment"));
             ipAddressErrorProvider.SetIconPadding(serverListBox, (int)resources.GetObject("serverListBox.IconPadding"));
             serverListBox.Name = "serverListBox";
+            serverListBox.Sorted = true;
             ModOrderTooltip.SetToolTip(serverListBox, resources.GetString("serverListBox.ToolTip"));
             serverListBox.SelectedIndexChanged += serverListBox_SelectedIndexChanged;
             // 
@@ -217,7 +247,6 @@
             ipAddressErrorProvider.SetIconPadding(serverTab, (int)resources.GetObject("serverTab.IconPadding"));
             serverTab.Name = "serverTab";
             ModOrderTooltip.SetToolTip(serverTab, resources.GetString("serverTab.ToolTip"));
-            serverTab.UseVisualStyleBackColor = true;
             // 
             // serverDataPanel
             // 
@@ -312,12 +341,212 @@
             // 
             resources.ApplyResources(modsTab, "modsTab");
             modsTab.BorderStyle = BorderStyle.FixedSingle;
+            modsTab.Controls.Add(panel7);
+            modsTab.Controls.Add(tableLayoutPanel3);
+            modsTab.Controls.Add(panel3);
             ipAddressErrorProvider.SetError(modsTab, resources.GetString("modsTab.Error"));
             ipAddressErrorProvider.SetIconAlignment(modsTab, (ErrorIconAlignment)resources.GetObject("modsTab.IconAlignment"));
             ipAddressErrorProvider.SetIconPadding(modsTab, (int)resources.GetObject("modsTab.IconPadding"));
             modsTab.Name = "modsTab";
             ModOrderTooltip.SetToolTip(modsTab, resources.GetString("modsTab.ToolTip"));
             modsTab.UseVisualStyleBackColor = true;
+            // 
+            // panel7
+            // 
+            resources.ApplyResources(panel7, "panel7");
+            panel7.Controls.Add(refreshModsButton);
+            ipAddressErrorProvider.SetError(panel7, resources.GetString("panel7.Error"));
+            ipAddressErrorProvider.SetIconAlignment(panel7, (ErrorIconAlignment)resources.GetObject("panel7.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(panel7, (int)resources.GetObject("panel7.IconPadding"));
+            panel7.Name = "panel7";
+            ModOrderTooltip.SetToolTip(panel7, resources.GetString("panel7.ToolTip"));
+            // 
+            // refreshModsButton
+            // 
+            resources.ApplyResources(refreshModsButton, "refreshModsButton");
+            refreshModsButton.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(refreshModsButton, resources.GetString("refreshModsButton.Error"));
+            ipAddressErrorProvider.SetIconAlignment(refreshModsButton, (ErrorIconAlignment)resources.GetObject("refreshModsButton.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(refreshModsButton, (int)resources.GetObject("refreshModsButton.IconPadding"));
+            refreshModsButton.Name = "refreshModsButton";
+            ModOrderTooltip.SetToolTip(refreshModsButton, resources.GetString("refreshModsButton.ToolTip"));
+            refreshModsButton.UseVisualStyleBackColor = false;
+            refreshModsButton.Click += refreshModsButton_Click;
+            // 
+            // tableLayoutPanel3
+            // 
+            resources.ApplyResources(tableLayoutPanel3, "tableLayoutPanel3");
+            tableLayoutPanel3.Controls.Add(tableLayoutPanel4, 1, 0);
+            tableLayoutPanel3.Controls.Add(tableLayoutPanel5, 3, 0);
+            tableLayoutPanel3.Controls.Add(panel4, 0, 0);
+            tableLayoutPanel3.Controls.Add(panel5, 2, 0);
+            ipAddressErrorProvider.SetError(tableLayoutPanel3, resources.GetString("tableLayoutPanel3.Error"));
+            ipAddressErrorProvider.SetIconAlignment(tableLayoutPanel3, (ErrorIconAlignment)resources.GetObject("tableLayoutPanel3.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(tableLayoutPanel3, (int)resources.GetObject("tableLayoutPanel3.IconPadding"));
+            tableLayoutPanel3.Name = "tableLayoutPanel3";
+            ModOrderTooltip.SetToolTip(tableLayoutPanel3, resources.GetString("tableLayoutPanel3.ToolTip"));
+            // 
+            // tableLayoutPanel4
+            // 
+            resources.ApplyResources(tableLayoutPanel4, "tableLayoutPanel4");
+            tableLayoutPanel4.Controls.Add(modSelectButton, 0, 1);
+            tableLayoutPanel4.Controls.Add(modDeselectButton, 0, 2);
+            ipAddressErrorProvider.SetError(tableLayoutPanel4, resources.GetString("tableLayoutPanel4.Error"));
+            ipAddressErrorProvider.SetIconAlignment(tableLayoutPanel4, (ErrorIconAlignment)resources.GetObject("tableLayoutPanel4.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(tableLayoutPanel4, (int)resources.GetObject("tableLayoutPanel4.IconPadding"));
+            tableLayoutPanel4.Name = "tableLayoutPanel4";
+            ModOrderTooltip.SetToolTip(tableLayoutPanel4, resources.GetString("tableLayoutPanel4.ToolTip"));
+            // 
+            // modSelectButton
+            // 
+            resources.ApplyResources(modSelectButton, "modSelectButton");
+            modSelectButton.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(modSelectButton, resources.GetString("modSelectButton.Error"));
+            ipAddressErrorProvider.SetIconAlignment(modSelectButton, (ErrorIconAlignment)resources.GetObject("modSelectButton.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(modSelectButton, (int)resources.GetObject("modSelectButton.IconPadding"));
+            modSelectButton.Name = "modSelectButton";
+            ModOrderTooltip.SetToolTip(modSelectButton, resources.GetString("modSelectButton.ToolTip"));
+            modSelectButton.UseVisualStyleBackColor = false;
+            // 
+            // modDeselectButton
+            // 
+            resources.ApplyResources(modDeselectButton, "modDeselectButton");
+            modDeselectButton.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(modDeselectButton, resources.GetString("modDeselectButton.Error"));
+            ipAddressErrorProvider.SetIconAlignment(modDeselectButton, (ErrorIconAlignment)resources.GetObject("modDeselectButton.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(modDeselectButton, (int)resources.GetObject("modDeselectButton.IconPadding"));
+            modDeselectButton.Name = "modDeselectButton";
+            ModOrderTooltip.SetToolTip(modDeselectButton, resources.GetString("modDeselectButton.ToolTip"));
+            modDeselectButton.UseVisualStyleBackColor = false;
+            // 
+            // tableLayoutPanel5
+            // 
+            resources.ApplyResources(tableLayoutPanel5, "tableLayoutPanel5");
+            tableLayoutPanel5.Controls.Add(modMoveUp, 0, 1);
+            tableLayoutPanel5.Controls.Add(modMoveDown, 0, 2);
+            ipAddressErrorProvider.SetError(tableLayoutPanel5, resources.GetString("tableLayoutPanel5.Error"));
+            ipAddressErrorProvider.SetIconAlignment(tableLayoutPanel5, (ErrorIconAlignment)resources.GetObject("tableLayoutPanel5.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(tableLayoutPanel5, (int)resources.GetObject("tableLayoutPanel5.IconPadding"));
+            tableLayoutPanel5.Name = "tableLayoutPanel5";
+            ModOrderTooltip.SetToolTip(tableLayoutPanel5, resources.GetString("tableLayoutPanel5.ToolTip"));
+            // 
+            // modMoveUp
+            // 
+            resources.ApplyResources(modMoveUp, "modMoveUp");
+            modMoveUp.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(modMoveUp, resources.GetString("modMoveUp.Error"));
+            ipAddressErrorProvider.SetIconAlignment(modMoveUp, (ErrorIconAlignment)resources.GetObject("modMoveUp.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(modMoveUp, (int)resources.GetObject("modMoveUp.IconPadding"));
+            modMoveUp.Name = "modMoveUp";
+            ModOrderTooltip.SetToolTip(modMoveUp, resources.GetString("modMoveUp.ToolTip"));
+            modMoveUp.UseVisualStyleBackColor = false;
+            // 
+            // modMoveDown
+            // 
+            resources.ApplyResources(modMoveDown, "modMoveDown");
+            modMoveDown.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(modMoveDown, resources.GetString("modMoveDown.Error"));
+            ipAddressErrorProvider.SetIconAlignment(modMoveDown, (ErrorIconAlignment)resources.GetObject("modMoveDown.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(modMoveDown, (int)resources.GetObject("modMoveDown.IconPadding"));
+            modMoveDown.Name = "modMoveDown";
+            ModOrderTooltip.SetToolTip(modMoveDown, resources.GetString("modMoveDown.ToolTip"));
+            modMoveDown.UseVisualStyleBackColor = false;
+            // 
+            // panel4
+            // 
+            resources.ApplyResources(panel4, "panel4");
+            panel4.Controls.Add(availableModsListBox);
+            panel4.Controls.Add(label6);
+            ipAddressErrorProvider.SetError(panel4, resources.GetString("panel4.Error"));
+            ipAddressErrorProvider.SetIconAlignment(panel4, (ErrorIconAlignment)resources.GetObject("panel4.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(panel4, (int)resources.GetObject("panel4.IconPadding"));
+            panel4.Name = "panel4";
+            ModOrderTooltip.SetToolTip(panel4, resources.GetString("panel4.ToolTip"));
+            // 
+            // availableModsListBox
+            // 
+            resources.ApplyResources(availableModsListBox, "availableModsListBox");
+            availableModsListBox.DisplayMember = "FileName";
+            ipAddressErrorProvider.SetError(availableModsListBox, resources.GetString("availableModsListBox.Error"));
+            availableModsListBox.FormattingEnabled = true;
+            ipAddressErrorProvider.SetIconAlignment(availableModsListBox, (ErrorIconAlignment)resources.GetObject("availableModsListBox.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(availableModsListBox, (int)resources.GetObject("availableModsListBox.IconPadding"));
+            availableModsListBox.Name = "availableModsListBox";
+            availableModsListBox.Sorted = true;
+            ModOrderTooltip.SetToolTip(availableModsListBox, resources.GetString("availableModsListBox.ToolTip"));
+            // 
+            // label6
+            // 
+            resources.ApplyResources(label6, "label6");
+            ipAddressErrorProvider.SetError(label6, resources.GetString("label6.Error"));
+            ipAddressErrorProvider.SetIconAlignment(label6, (ErrorIconAlignment)resources.GetObject("label6.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(label6, (int)resources.GetObject("label6.IconPadding"));
+            label6.Name = "label6";
+            ModOrderTooltip.SetToolTip(label6, resources.GetString("label6.ToolTip"));
+            // 
+            // panel5
+            // 
+            resources.ApplyResources(panel5, "panel5");
+            panel5.Controls.Add(panel6);
+            ipAddressErrorProvider.SetError(panel5, resources.GetString("panel5.Error"));
+            ipAddressErrorProvider.SetIconAlignment(panel5, (ErrorIconAlignment)resources.GetObject("panel5.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(panel5, (int)resources.GetObject("panel5.IconPadding"));
+            panel5.Name = "panel5";
+            ModOrderTooltip.SetToolTip(panel5, resources.GetString("panel5.ToolTip"));
+            // 
+            // panel6
+            // 
+            resources.ApplyResources(panel6, "panel6");
+            panel6.Controls.Add(selectedModsListBox);
+            panel6.Controls.Add(label7);
+            ipAddressErrorProvider.SetError(panel6, resources.GetString("panel6.Error"));
+            ipAddressErrorProvider.SetIconAlignment(panel6, (ErrorIconAlignment)resources.GetObject("panel6.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(panel6, (int)resources.GetObject("panel6.IconPadding"));
+            panel6.Name = "panel6";
+            ModOrderTooltip.SetToolTip(panel6, resources.GetString("panel6.ToolTip"));
+            // 
+            // selectedModsListBox
+            // 
+            resources.ApplyResources(selectedModsListBox, "selectedModsListBox");
+            selectedModsListBox.DisplayMember = "FileName";
+            selectedModsListBox.DrawMode = DrawMode.OwnerDrawFixed;
+            ipAddressErrorProvider.SetError(selectedModsListBox, resources.GetString("selectedModsListBox.Error"));
+            selectedModsListBox.FormattingEnabled = true;
+            ipAddressErrorProvider.SetIconAlignment(selectedModsListBox, (ErrorIconAlignment)resources.GetObject("selectedModsListBox.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(selectedModsListBox, (int)resources.GetObject("selectedModsListBox.IconPadding"));
+            selectedModsListBox.Name = "selectedModsListBox";
+            ModOrderTooltip.SetToolTip(selectedModsListBox, resources.GetString("selectedModsListBox.ToolTip"));
+            // 
+            // label7
+            // 
+            resources.ApplyResources(label7, "label7");
+            ipAddressErrorProvider.SetError(label7, resources.GetString("label7.Error"));
+            ipAddressErrorProvider.SetIconAlignment(label7, (ErrorIconAlignment)resources.GetObject("label7.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(label7, (int)resources.GetObject("label7.IconPadding"));
+            label7.Name = "label7";
+            ModOrderTooltip.SetToolTip(label7, resources.GetString("label7.ToolTip"));
+            // 
+            // panel3
+            // 
+            resources.ApplyResources(panel3, "panel3");
+            panel3.Controls.Add(saveModsButton);
+            ipAddressErrorProvider.SetError(panel3, resources.GetString("panel3.Error"));
+            ipAddressErrorProvider.SetIconAlignment(panel3, (ErrorIconAlignment)resources.GetObject("panel3.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(panel3, (int)resources.GetObject("panel3.IconPadding"));
+            panel3.Name = "panel3";
+            ModOrderTooltip.SetToolTip(panel3, resources.GetString("panel3.ToolTip"));
+            // 
+            // saveModsButton
+            // 
+            resources.ApplyResources(saveModsButton, "saveModsButton");
+            saveModsButton.BackColor = SystemColors.ButtonFace;
+            ipAddressErrorProvider.SetError(saveModsButton, resources.GetString("saveModsButton.Error"));
+            ipAddressErrorProvider.SetIconAlignment(saveModsButton, (ErrorIconAlignment)resources.GetObject("saveModsButton.IconAlignment"));
+            ipAddressErrorProvider.SetIconPadding(saveModsButton, (int)resources.GetObject("saveModsButton.IconPadding"));
+            saveModsButton.Name = "saveModsButton";
+            ModOrderTooltip.SetToolTip(saveModsButton, resources.GetString("saveModsButton.ToolTip"));
+            saveModsButton.UseVisualStyleBackColor = false;
+            saveModsButton.Click += saveModsButton_Click;
             // 
             // settingsTab
             // 
@@ -470,6 +699,24 @@
             resources.ApplyResources(savedDataBrowserDialog, "savedDataBrowserDialog");
             savedDataBrowserDialog.InitialDirectory = "%HOME%";
             // 
+            // dualList1
+            // 
+            dualList1.AvailableItemsListBox = null;
+            dualList1.DeselectButton = null;
+            dualList1.DownButton = null;
+            dualList1.SelectButton = null;
+            dualList1.SelectedItemsListBox = null;
+            dualList1.UpButton = null;
+            // 
+            // modsDualList
+            // 
+            modsDualList.AvailableItemsListBox = availableModsListBox;
+            modsDualList.DeselectButton = modDeselectButton;
+            modsDualList.DownButton = modMoveDown;
+            modsDualList.SelectButton = modSelectButton;
+            modsDualList.SelectedItemsListBox = selectedModsListBox;
+            modsDualList.UpButton = modMoveUp;
+            // 
             // Launcher
             // 
             resources.ApplyResources(this, "$this");
@@ -497,6 +744,21 @@
             serverTab.ResumeLayout(false);
             serverDataPanel.ResumeLayout(false);
             serverDataPanel.PerformLayout();
+            modsTab.ResumeLayout(false);
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
+            tableLayoutPanel3.ResumeLayout(false);
+            tableLayoutPanel4.ResumeLayout(false);
+            tableLayoutPanel4.PerformLayout();
+            tableLayoutPanel5.ResumeLayout(false);
+            tableLayoutPanel5.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel6.ResumeLayout(false);
+            panel6.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             settingsTab.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -543,5 +805,25 @@
         private Button steamPathBrowseButton;
         private FolderBrowserDialog steamPathBrowserDialog;
         private FolderBrowserDialog savedDataBrowserDialog;
+        private Panel panel3;
+        private TableLayoutPanel tableLayoutPanel3;
+        private Button saveModsButton;
+        private TableLayoutPanel tableLayoutPanel4;
+        private TableLayoutPanel tableLayoutPanel5;
+        private Button modSelectButton;
+        private Button modDeselectButton;
+        private Button modMoveUp;
+        private Button modMoveDown;
+        private Panel panel4;
+        private Panel panel5;
+        private ListBox availableModsListBox;
+        private Label label6;
+        private Panel panel6;
+        private ListBox selectedModsListBox;
+        private Label label7;
+        private DualList dualList1;
+        private DualList modsDualList;
+        private Button refreshModsButton;
+        private Panel panel7;
     }
 }

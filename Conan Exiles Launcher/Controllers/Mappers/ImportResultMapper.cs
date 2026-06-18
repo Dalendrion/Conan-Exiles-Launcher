@@ -10,7 +10,8 @@ namespace Conan_Exiles_Launcher.Controllers.Mappers
             return new ImportResult(
                 ServerDataMapper.FromDto(dto.Server),
                 dto.Mods.Select(mod => ModDataMapper.FromDto(mod)).ToList()
-            );
+            )
+            { Guid = dto.Guid };
         }
 
         public static ImportResultDto ToDto(ImportResult importResult)
@@ -18,7 +19,8 @@ namespace Conan_Exiles_Launcher.Controllers.Mappers
             return new ImportResultDto(
                 ServerDataMapper.ToDto(importResult.Server),
                 importResult.Mods.Select(mod => ModDataMapper.ToDto(mod)).ToList()
-            );
+            )
+            { Guid = importResult.Guid };
         }
     }
 }

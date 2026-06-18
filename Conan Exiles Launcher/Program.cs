@@ -7,6 +7,7 @@ namespace Conan_Exiles_Launcher.Controllers
     internal static class Program
     {
         private static ISavedDataPort SavedDataPort { get; } = new SavedDataAdapter();
+        private static IInstalledModsPort InstalledModsPort { get; } = new InstalledModsAdapter();
         private static IGameSettingsReaderPort GameSettingsReader { get; } = new GameSettingsReaderAdapter();
         private static ISelectedModsReaderPort SelectedModsReader { get; } = new SelectedModsReaderAdapter();
         private static IModlistWriterPort ModlistWriter { get; } = new ModlistWriterAdapter();
@@ -25,6 +26,7 @@ namespace Conan_Exiles_Launcher.Controllers
 
             Application.Run(new Launcher(
                 new ImportLastServerService(GameSettingsReader, SelectedModsReader, SavedDataPort),
+                new ImportInstalledModsService(InstalledModsPort),
                 new SaveDataService(SavedDataPort),
                 new LoadDataService(SavedDataPort),
                 new LaunchGameService(ModlistWriter, GameLauncher),

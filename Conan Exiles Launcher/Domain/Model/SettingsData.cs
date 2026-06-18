@@ -2,8 +2,8 @@
 {
     public record SettingsData
     {
-        public string SteamPath { get; } = "";
-        public string SavedDataPath { get; } = "";
+        public string SteamPath { init; get; }
+        public string SavedDataPath { init; get; }
 
         public SettingsData(string steamPath, string savedDataPath)
         {

@@ -50,6 +50,25 @@ namespace Conan_Exiles_Launcher.Controllers.Dto
             }
         }
 
+        public override bool Equals(object? other)
+        {
+            if (other == null) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (other is ImportResultDto that)
+            {
+                return this.Guid == that.Guid;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return Guid.GetHashCode();
+        }
+
         public override string ToString()
         {
             return $@"{{

@@ -11,14 +11,16 @@ namespace Conan_Exiles_Launcher.Controllers
     public partial class Launcher : Form
     {
         private readonly IImportLastPlayedServerUseCase _importLastPlayedServerUseCase;
+        private readonly IImportInstalledModsUseCase _importInstalledModsUseCase;
         private readonly ISaveDataUseCase _saveDataUseCase;
         private readonly ILoadDataUseCase _loadDataUseCase;
         private readonly ILaunchGameUseCase _launchGameUseCase;
         private readonly ISaveDirectoriesUseCase _saveDirectoriesUseCase;
 
-        private Action retry;
+        private Action? retry;
 
-        private BindingList<ImportResultDto> savedData;
+        private BindingList<ImportResultDto>? savedData;
+        private BindingList<ModDataDto>? modData;
 
         private ImportResultDto? selectedItem;
         private ImportResultDto? SelectedServer
@@ -35,16 +37,26 @@ namespace Conan_Exiles_Launcher.Controllers
                 ServerNameTextBox.Text = value?.Server.Name ?? "";
                 ServerIPTextBox.Text = value?.IPAddress ?? "";
                 ServerBattleEyeCheckBox.Checked = value?.Server.BattleEye ?? false;
+
+                //modsDualList.SetData(selectedItem?.Mods ?? new List<ModDataDto>());
+
+                modData.Clear();
+                foreach (ModDataDto mod in selectedItem?.Mods ?? new List<ModDataDto>())
+                {
+                    modData.Add(mod);
+                }
             }
         }
 
         public Launcher(IImportLastPlayedServerUseCase importLastPlayedServerUseCase,
+                        IImportInstalledModsUseCase importInstalledModsUseCase,
                         ISaveDataUseCase saveDataUseCase,
                         ILoadDataUseCase loadDataUseCase,
                         ILaunchGameUseCase launchGameUseCase,
                         ISaveDirectoriesUseCase saveDirectoriesUseCase)
         {
             _importLastPlayedServerUseCase = importLastPlayedServerUseCase ?? throw new ArgumentNullException(nameof(importLastPlayedServerUseCase));
+            _importInstalledModsUseCase = importInstalledModsUseCase ?? throw new ArgumentNullException(nameof(importInstalledModsUseCase));
             _saveDataUseCase = saveDataUseCase ?? throw new ArgumentNullException(nameof(saveDataUseCase));
             _loadDataUseCase = loadDataUseCase ?? throw new ArgumentNullException(nameof(loadDataUseCase));
             _launchGameUseCase = launchGameUseCase ?? throw new ArgumentNullException(nameof(launchGameUseCase));
@@ -60,7 +72,15 @@ namespace Conan_Exiles_Launcher.Controllers
                 steamPathTextBox.Text = Settings.Default.SteamPath;
                 savedDataPathTextBox.Text = Settings.Default.SavedDataPath;
 
+                modData = new BindingList<ModDataDto>();
+                selectedModsListBox.DataSource = modData;
                 UpdateServerList();
+                await ImportMods();
+
+                serverListBox.DisplayMember = "ServerName";
+                serverListBox.DataSource = savedData;
+                serverListBox.SelectedItem = SelectedServer;
+
             }
             catch (Exception ex)
             {
@@ -154,7 +174,7 @@ namespace Conan_Exiles_Launcher.Controllers
 
         private void serverListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedServer = (ImportResultDto)serverListBox.SelectedItem;
+            SelectedServer = (ImportResultDto?)serverListBox.SelectedItem;
         }
 
         private async void SaveServerButton_Click(object sender, EventArgs e)
@@ -170,15 +190,15 @@ namespace Conan_Exiles_Launcher.Controllers
                 SelectedServer.IPAddress = ServerIPTextBox.Text;
                 SelectedServer.Server.BattleEye = ServerBattleEyeCheckBox.Checked;
 
-
                 ImportResult r = await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(SelectedServer));
                 ImportResultDto dto = ImportResultMapper.ToDto(r);
-                if (savedData.ToList().Find(i => Guid.Equals(i.Guid, dto.Guid)) == null)
+                if (!savedData.Contains(dto))
                 {
                     savedData.Add(dto);
                 }
 
                 UpdateServerList();
+
                 SelectedServer = dto;
                 serverListBox.SelectedItem = dto;
             }
@@ -212,13 +232,19 @@ namespace Conan_Exiles_Launcher.Controllers
 
         private async void UpdateServerList()
         {
-            List<ImportResultDto> importResultsDto = (await _loadDataUseCase.LoadAsync()).Select(ImportResultMapper.ToDto).ToList();
-            importResultsDto.Sort((a, b) => string.Compare(a.Server.Name, b.Server.Name, StringComparison.Ordinal));
-            savedData = new BindingList<ImportResultDto>(importResultsDto);
+            if (savedData == null)
+            {
+                savedData = new BindingList<ImportResultDto>();
+            }
+            else
+            {
+                savedData.Clear();
+            }
 
-            serverListBox.DisplayMember = "ServerName";
-            serverListBox.DataSource = savedData;
-            serverListBox.SelectedItem = SelectedServer;
+            (await _loadDataUseCase.LoadAsync())
+                .Select(ImportResultMapper.ToDto)
+                .ToList()
+                .ForEach(savedData.Add);
         }
 
         private void steamPathBrowseButton_Click(object sender, EventArgs e)
@@ -244,6 +270,28 @@ namespace Conan_Exiles_Launcher.Controllers
         private void button1_Click(object sender, EventArgs e)
         {
             _saveDirectoriesUseCase.SaveDirectories(new SettingsData(steamPathTextBox.Text, savedDataPathTextBox.Text));
+        }
+
+        private async void refreshModsButton_Click(object sender, EventArgs e)
+        {
+            await ImportMods();
+        }
+
+        private async Task ImportMods() {
+            List<ModDataDto> mods = (await _importInstalledModsUseCase.GetInstalledMods())
+                .Select(ModDataMapper.ToDto)
+                .ToList();
+            modsDualList.SetData(mods);
+        }
+
+        private async void saveModsButton_Click(object sender, EventArgs e)
+        {
+            SelectedServer.Mods.Clear();
+            foreach (var item in selectedModsListBox.Items)
+            {
+                SelectedServer.Mods.Add((ModDataDto)item);
+            }
+            ImportResult r = await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(SelectedServer));
         }
     }
 }
