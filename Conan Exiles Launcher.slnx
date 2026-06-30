@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Conan Exiles Launcher Installer/Conan Exiles Launcher Installer.vdproj" Type="Installer" />
   <Project Path="Conan Exiles Launcher Test/Conan Exiles Launcher Test.csproj" Id="60289202-43f6-48cb-a8a3-094f8c7e507b" />
   <Project Path="Conan Exiles Launcher/Conan Exiles Launcher.csproj" />
 </Solution>

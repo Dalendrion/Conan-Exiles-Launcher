@@ -1,4 +1,5 @@
-﻿using Conan_Exiles_Launcher.Domain.Model;
+﻿using Conan_Exiles_Launcher.Domain.Exceptions;
+using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Ports;
 using Conan_Exiles_Launcher.Properties;
 using System.Text.Json;
@@ -9,13 +10,15 @@ namespace Conan_Exiles_Launcher.Adapters
     {
         List<ImportResult>? _savedData;
 
+        /// <exception cref="InvalidPathException">When the SavedData path is invalid.</exception>
         public List<ImportResult> GetAllImportResults()
         {
             if (_savedData == null)
             {
+                string path = Settings.Default.SavedDataPath;
                 try
                 {
-                    string rawSavedData = File.ReadAllText(Settings.Default.SavedDataPath + Settings.Default.SavedDataFile);
+                    string rawSavedData = File.ReadAllText(path);
                     _savedData = JsonSerializer.Deserialize<List<ImportResult>>(rawSavedData) ?? new List<ImportResult>();
                 }
                 catch (FileNotFoundException ex)
@@ -26,17 +29,27 @@ namespace Conan_Exiles_Launcher.Adapters
                 {
                     _savedData = new List<ImportResult>();
                 }
+                catch (IOException ex)
+                {
+                    throw new InvalidPathException("Invalid Path: " + path, ex);
+                }
+                catch (ArgumentException ex)
+                {
+                    throw new InvalidPathException("Invalid Path: " + path, ex);
+                }
             }
 
             return _savedData;
         }
 
+        /// <exception cref="InvalidPathException">When the SavedData path is invalid.</exception>
         public ImportResult? GetImportResult(Guid guid)
         {
             List<ImportResult> savedData = GetAllImportResults();
             return savedData.FirstOrDefault(importResult => importResult.Guid == guid);
         }
 
+        /// <exception cref="InvalidPathException">When the SavedData path is invalid.</exception>
         public void SaveImportResult(ImportResult importResult)
         {
             if (importResult.Guid == null)
@@ -59,7 +72,7 @@ namespace Conan_Exiles_Launcher.Adapters
                 WriteIndented = true,
             };
             string json = JsonSerializer.Serialize(importResults, options);
-            string savedDataPath = Settings.Default.SavedDataPath + Settings.Default.SavedDataFile;
+            string savedDataPath = Settings.Default.SavedDataPath;
             ValidateOrCreateDir(savedDataPath, () => new Exception($"Invalid saved data path {savedDataPath}."));
             File.WriteAllText(savedDataPath, json);
         }

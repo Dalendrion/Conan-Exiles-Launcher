@@ -1,5 +1,6 @@
 using Conan_Exiles_Launcher.Controllers.Dto;
 using Conan_Exiles_Launcher.Controllers.Mappers;
+using Conan_Exiles_Launcher.Domain.Exceptions;
 using Conan_Exiles_Launcher.Domain.Model;
 using Conan_Exiles_Launcher.Domain.Services;
 using Conan_Exiles_Launcher.Domain.UseCases;
@@ -15,7 +16,8 @@ namespace Conan_Exiles_Launcher.Controllers
         private readonly ISaveDataUseCase _saveDataUseCase;
         private readonly ILoadDataUseCase _loadDataUseCase;
         private readonly ILaunchGameUseCase _launchGameUseCase;
-        private readonly ISaveDirectoriesUseCase _saveDirectoriesUseCase;
+        private readonly ISaveSteamPathUseCase _saveSteamPathUseCase;
+        private readonly ISaveSavedDataPathUseCase _saveSavedDataPathUseCase;
 
         private Action? retry;
 
@@ -53,14 +55,16 @@ namespace Conan_Exiles_Launcher.Controllers
                         ISaveDataUseCase saveDataUseCase,
                         ILoadDataUseCase loadDataUseCase,
                         ILaunchGameUseCase launchGameUseCase,
-                        ISaveDirectoriesUseCase saveDirectoriesUseCase)
+                        ISaveSteamPathUseCase saveSteamPathUseCase,
+                        ISaveSavedDataPathUseCase saveSavedDataPathUseCase)
         {
             _importLastPlayedServerUseCase = importLastPlayedServerUseCase ?? throw new ArgumentNullException(nameof(importLastPlayedServerUseCase));
             _importInstalledModsUseCase = importInstalledModsUseCase ?? throw new ArgumentNullException(nameof(importInstalledModsUseCase));
             _saveDataUseCase = saveDataUseCase ?? throw new ArgumentNullException(nameof(saveDataUseCase));
             _loadDataUseCase = loadDataUseCase ?? throw new ArgumentNullException(nameof(loadDataUseCase));
             _launchGameUseCase = launchGameUseCase ?? throw new ArgumentNullException(nameof(launchGameUseCase));
-            _saveDirectoriesUseCase = saveDirectoriesUseCase ?? throw new ArgumentNullException(nameof(saveDirectoriesUseCase));
+            _saveSteamPathUseCase = saveSteamPathUseCase ?? throw new ArgumentNullException(nameof(saveSteamPathUseCase));
+            _saveSavedDataPathUseCase = saveSavedDataPathUseCase ?? throw new ArgumentNullException(nameof(_saveSavedDataPathUseCase));
 
             InitializeComponent();
         }
@@ -69,18 +73,30 @@ namespace Conan_Exiles_Launcher.Controllers
         {
             try
             {
-                steamPathTextBox.Text = Settings.Default.SteamPath;
-                savedDataPathTextBox.Text = Settings.Default.SavedDataPath;
+                if (Settings.Default.SteamPath.IsWhiteSpace())
+                {
+                    await ShowSteamPathBrowserDialog();
+                }
+
+                if (Settings.Default.SavedDataPath.IsWhiteSpace())
+                {
+                    await ShowSavedDataPathBrowserDialog();
+                }
 
                 modData = new BindingList<ModDataDto>();
                 selectedModsListBox.DataSource = modData;
-                UpdateServerList();
+                await FetchSavedData();
+
                 await ImportMods();
 
                 serverListBox.DisplayMember = "ServerName";
                 serverListBox.DataSource = savedData;
                 serverListBox.SelectedItem = SelectedServer;
 
+            }
+            catch (InvalidPathException ex)
+            {
+                ShowErrorMessage("Please set your paths.", ex.Message);
             }
             catch (Exception ex)
             {
@@ -96,7 +112,7 @@ namespace Conan_Exiles_Launcher.Controllers
             try
             {
                 ImportResultDto lastPlayedServer = ImportResultMapper.ToDto(await _importLastPlayedServerUseCase.ImportAsync());
-                UpdateServerList();
+                FetchSavedData();
 
                 ImportResultDto? matchingSavedResult = savedData.FirstOrDefault(s => ServerDataDto.HasSameIpAddress(s.Server, lastPlayedServer.Server));
                 if (matchingSavedResult != null)
@@ -106,7 +122,7 @@ namespace Conan_Exiles_Launcher.Controllers
                 SelectedServer = lastPlayedServer;
                 serverListBox.SelectedItem = lastPlayedServer;
 
-                UpdateServerList();
+                //FetchSavedData();
             }
             catch (Exception ex)
             {
@@ -197,7 +213,7 @@ namespace Conan_Exiles_Launcher.Controllers
                     savedData.Add(dto);
                 }
 
-                UpdateServerList();
+                FetchSavedData();
 
                 SelectedServer = dto;
                 serverListBox.SelectedItem = dto;
@@ -230,7 +246,7 @@ namespace Conan_Exiles_Launcher.Controllers
             serverDataPanel.Enabled = true;
         }
 
-        private async void UpdateServerList()
+        private async Task FetchSavedData()
         {
             if (savedData == null)
             {
@@ -241,35 +257,18 @@ namespace Conan_Exiles_Launcher.Controllers
                 savedData.Clear();
             }
 
-            (await _loadDataUseCase.LoadAsync())
-                .Select(ImportResultMapper.ToDto)
-                .ToList()
-                .ForEach(savedData.Add);
-        }
-
-        private void steamPathBrowseButton_Click(object sender, EventArgs e)
-        {
-            steamPathBrowserDialog.SelectedPath = steamPathTextBox.Text;
-            DialogResult dialogResult = steamPathBrowserDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            try
             {
-                steamPathTextBox.Text = steamPathBrowserDialog.SelectedPath;
+                List<ImportResult> importResults = await _loadDataUseCase.LoadAsync();
+                importResults
+                    .Select(ImportResultMapper.ToDto)
+                    .ToList()
+                    .ForEach(savedData.Add);
             }
-        }
-
-        private void saveDataBrowseButton_Click(object sender, EventArgs e)
-        {
-            savedDataBrowserDialog.SelectedPath = savedDataPathTextBox.Text;
-            DialogResult dialogResult = savedDataBrowserDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            catch (Exception ex)
             {
-                savedDataPathTextBox.Text = savedDataBrowserDialog.SelectedPath;
+                ShowErrorMessage("Could not fetch saved data.", ex.Message);
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            _saveDirectoriesUseCase.SaveDirectories(new SettingsData(steamPathTextBox.Text, savedDataPathTextBox.Text));
         }
 
         private async void refreshModsButton_Click(object sender, EventArgs e)
@@ -277,7 +276,8 @@ namespace Conan_Exiles_Launcher.Controllers
             await ImportMods();
         }
 
-        private async Task ImportMods() {
+        private async Task ImportMods()
+        {
             List<ModDataDto> mods = (await _importInstalledModsUseCase.GetInstalledMods())
                 .Select(ModDataMapper.ToDto)
                 .ToList();
@@ -292,6 +292,116 @@ namespace Conan_Exiles_Launcher.Controllers
                 SelectedServer.Mods.Add((ModDataDto)item);
             }
             ImportResult r = await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(SelectedServer));
+        }
+
+        private async void steamToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            while (await Throws<InvalidSteamPathException>(ShowSteamPathBrowserDialog))
+            {
+                MessageBox.Show("Please select your SteamLibrary folder.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            while (await Throws<InvalidSavedDataPathException>(ShowSavedDataPathBrowserDialog))
+            {
+                MessageBox.Show("Please select a json file.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            await FetchSavedData();
+            await ImportMods();
+        }
+
+        private async void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            await SaveAllServers();
+        }
+
+        private async void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveSavedDataFileDialog.FileName = Settings.Default.SavedDataPath;
+            saveSavedDataFileDialog.InitialDirectory = Directory.GetParent(Settings.Default.SavedDataPath).FullName;
+            DialogResult dialogResult = saveSavedDataFileDialog.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+                await _saveSavedDataPathUseCase.Save(saveSavedDataFileDialog.FileName);
+                await SaveAllServers();
+            }
+            else
+            {
+                MessageBox.Show("Data was not saved.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private async Task SaveAllServers()
+        {
+            foreach (ImportResultDto dto in savedData)
+            {
+                await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(dto));
+            }
+        }
+
+        private async Task ShowSteamPathBrowserDialog()
+        {
+            steamPathBrowserDialog.SelectedPath = Settings.Default.SteamPath;
+            try
+            {
+                steamPathBrowserDialog.InitialDirectory = Directory.GetParent(Settings.Default.SteamPath).FullName;
+            }
+            catch (Exception)
+            {
+                /* No correct path was set. We're going to set that now. */
+            }
+
+            DialogResult dialogResult = steamPathBrowserDialog.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+                await _saveSteamPathUseCase.Save(steamPathBrowserDialog.SelectedPath);
+            }
+            else
+            {
+                MessageBox.Show("Steam Path was not changed.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private async Task ShowSavedDataPathBrowserDialog()
+        {
+            savedDataBrowserDialog.FileName = Settings.Default.SavedDataPath;
+            try
+            {
+                savedDataBrowserDialog.InitialDirectory = Directory.GetParent(Settings.Default.SavedDataPath).FullName;
+            }
+            catch (Exception)
+            {
+                /* No correct path was set. We're going to set that now. */
+            }
+
+            DialogResult dialogResult = savedDataBrowserDialog.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+                await _saveSavedDataPathUseCase.Save(savedDataBrowserDialog.FileName);
+            }
+            else
+            {
+                MessageBox.Show("Path was not changed.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private static async Task<bool> Throws<T>(Func<Task> task) where T : Exception
+        {
+            try
+            {
+                await task();
+                return false;
+            }
+            catch (T)
+            {
+                return true;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using Conan_Exiles_Launcher.Adapters;
 using Conan_Exiles_Launcher.Domain.Ports;
 using Conan_Exiles_Launcher.Domain.Services;
+using Conan_Exiles_Launcher.Domain.UseCases;
 
 namespace Conan_Exiles_Launcher.Controllers
 {
@@ -30,7 +31,8 @@ namespace Conan_Exiles_Launcher.Controllers
                 new SaveDataService(SavedDataPort),
                 new LoadDataService(SavedDataPort),
                 new LaunchGameService(ModlistWriter, GameLauncher),
-                new SaveDirectoriesService(SettingsPort)
+                new SaveSteamPathService(SettingsPort),
+                new SaveSavedDataPathService(SettingsPort)
             ));
         }
     }

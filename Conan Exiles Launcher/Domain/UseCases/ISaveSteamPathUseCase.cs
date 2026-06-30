@@ -2,8 +2,8 @@
 
 namespace Conan_Exiles_Launcher.Domain.UseCases
 {
-    public interface ISaveDirectoriesUseCase
+    public interface ISaveSteamPathUseCase
     {
-        public Task SaveDirectories(SettingsData settingsData);
+        public Task Save(string steamPath);
     }
 }

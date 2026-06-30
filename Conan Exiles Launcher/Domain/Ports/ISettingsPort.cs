@@ -4,6 +4,7 @@ namespace Conan_Exiles_Launcher.Domain.Ports
 {
     public interface ISettingsPort
     {
-        public void SaveDirectories(SettingsData settingsData);
+        public void SaveSteamPath(string steamPath);
+        public void SaveSavedDataPath(string savedDataPath);
     }
 }
