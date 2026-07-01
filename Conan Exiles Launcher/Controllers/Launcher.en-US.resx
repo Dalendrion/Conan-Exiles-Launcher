@@ -461,7 +461,7 @@
     <value>2, 3, 2, 3</value>
   </data>
   <data name="serverDataPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>567, 347</value>
+    <value>565, 345</value>
   </data>
   <data name="serverTab.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 30</value>
@@ -675,6 +675,9 @@
   </data>
   <data name="selectedModsListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="selectedModsListBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>21</value>
   </data>
   <data name="selectedModsListBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 21</value>
