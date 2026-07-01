@@ -82,7 +82,7 @@ namespace Conan_Exiles_Launcher.Adapters
             string[] splitLine = line.Split("=", 2);
             switch (splitLine[0])
             {
-                case "ServerList":
+                case "ServersList":
                     ServerData faveServer = new ServerData();
                     // remove parentheses
                     string properties = splitLine[1];
