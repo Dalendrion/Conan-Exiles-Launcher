@@ -9,7 +9,7 @@
       <Value Profile="(Default)">\save\conan_exiles_launcher_data.json</Value>
     </Setting>
     <Setting Name="GameIni" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">\steamapps\common\Conan Exiles\ConanSandbox\Saved\Game.ini</Value>
+      <Value Profile="(Default)">\steamapps\common\Conan Exiles\ConanSandbox\Saved\Config\Windows\Game.ini</Value>
     </Setting>
     <Setting Name="ModlistPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">\steamapps\common\Conan Exiles\ConanSandbox\Mods\modlist.txt</Value>

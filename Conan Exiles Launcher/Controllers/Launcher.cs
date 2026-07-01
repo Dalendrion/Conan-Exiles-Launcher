@@ -35,6 +35,7 @@ namespace Conan_Exiles_Launcher.Controllers
             {
                 selectedItem = value;
                 serverDataPanel.Enabled = value != null;
+                LaunchGameButton.Enabled = value != null;
 
                 ServerNameTextBox.Text = value?.Server.Name ?? "";
                 ServerIPTextBox.Text = value?.IPAddress ?? "";

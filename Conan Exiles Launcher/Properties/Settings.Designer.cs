@@ -49,7 +49,7 @@ namespace Conan_Exiles_Launcher.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\\steamapps\\common\\Conan Exiles\\ConanSandbox\\Saved\\Game.ini")]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\steamapps\\common\\Conan Exiles\\ConanSandbox\\Saved\\Config\\Windows\\Game.ini")]
         public string GameIni {
             get {
                 return ((string)(this["GameIni"]));
