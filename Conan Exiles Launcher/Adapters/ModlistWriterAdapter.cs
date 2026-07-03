@@ -8,8 +8,9 @@ namespace Conan_Exiles_Launcher.Adapters
     {
         public void WriteModlist(List<ModData> modlistData)
         {
-            
-            string mods = string.Join(Environment.NewLine, modlistData.Select(m => '*' + Path.Combine([Settings.Default.SteamPath + Settings.Default.WorkshopContent, m.ID, m.FileName])));
+            string modContentPath = Settings.Default.SteamPath + Settings.Default.WorkshopContent;
+            IEnumerable<string> modItems = modlistData.Select(m => '*' + Path.Combine([modContentPath, m.ID, m.FileName]));
+            string mods = string.Join(Environment.NewLine, modItems) + "\n";
             string modlistPath = Settings.Default.SteamPath + Settings.Default.ModlistPath;
             ValidateOrCreateDir(modlistPath, () => new Exception($"Invalid modlist path {modlistPath}."));
             File.WriteAllText(modlistPath, mods);
