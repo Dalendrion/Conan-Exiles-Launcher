@@ -82,7 +82,6 @@
             deleteToolStripMenuItem = new ToolStripMenuItem();
             ipAddressErrorProvider = new ErrorProvider(components);
             steamPathBrowserDialog = new FolderBrowserDialog();
-            savedDataBrowserDialog = new OpenFileDialog();
             dualList1 = new DualList(components);
             modsDualList = new DualList(components);
             steamPathErrorProvider = new ErrorProvider(components);
@@ -785,11 +784,6 @@
             resources.ApplyResources(steamPathBrowserDialog, "steamPathBrowserDialog");
             steamPathBrowserDialog.InitialDirectory = "%HOME%";
             // 
-            // savedDataBrowserDialog
-            // 
-            resources.ApplyResources(savedDataBrowserDialog, "savedDataBrowserDialog");
-            savedDataBrowserDialog.InitialDirectory = "%HOME%";
-            // 
             // dualList1
             // 
             dualList1.AvailableItemsListBox = null;
@@ -816,7 +810,9 @@
             // 
             // saveSavedDataFileDialog
             // 
+            saveSavedDataFileDialog.DefaultExt = "json";
             resources.ApplyResources(saveSavedDataFileDialog, "saveSavedDataFileDialog");
+            saveSavedDataFileDialog.InitialDirectory = "%HOME%";
             // 
             // Launcher
             // 
@@ -833,6 +829,7 @@
             Name = "Launcher";
             SizeGripStyle = SizeGripStyle.Hide;
             ModOrderTooltip.SetToolTip(this, resources.GetString("$this.ToolTip"));
+            FormClosing += Launcher_FormClosing;
             Shown += Launcher_Shown;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -899,7 +896,6 @@
         private Button SaveServerButton;
         private ErrorProvider ipAddressErrorProvider;
         private FolderBrowserDialog steamPathBrowserDialog;
-        private OpenFileDialog savedDataBrowserDialog;
         private Panel panel3;
         private TableLayoutPanel tableLayoutPanel3;
         private Button saveModsButton;

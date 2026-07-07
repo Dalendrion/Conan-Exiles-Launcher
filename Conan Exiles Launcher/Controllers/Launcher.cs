@@ -77,26 +77,27 @@ namespace Conan_Exiles_Launcher.Controllers
         {
             try
             {
-                if (Settings.Default.SteamPath.IsWhiteSpace())
+                while (!Path.Exists(Settings.Default.SteamPath))
                 {
-                    await ShowSteamPathBrowserDialog();
-                }
-
-                if (Settings.Default.SavedDataPath.IsWhiteSpace())
-                {
-                    await ShowSavedDataPathBrowserDialog();
+                    await AskForSteamPath();
                 }
 
                 modData = new BindingList<ModDataDto>();
                 selectedModsListBox.DataSource = modData;
-                await FetchSavedData();
+                serverListBox.DisplayMember = "ServerName";
 
+                while (!Path.Exists(Settings.Default.SavedDataPath))
+                {
+                    saveSavedDataFileDialog.OverwritePrompt = false;
+                    await AskForSavefilePath();
+                    saveSavedDataFileDialog.OverwritePrompt = true;
+                }
+
+                await FetchSavedData();
                 await ImportMods();
 
-                serverListBox.DisplayMember = "ServerName";
                 serverListBox.DataSource = savedData;
                 serverListBox.SelectedItem = SelectedServer;
-
             }
             catch (InvalidPathException ex)
             {
@@ -107,6 +108,11 @@ namespace Conan_Exiles_Launcher.Controllers
                 ShowErrorMessage("Failed to load saved data", ex.Message);
                 retry = () => Launcher_Shown(sender, e);
             }
+        }
+
+        private async void Launcher_FormClosing(object sender, EventArgs e)
+        {
+            await SaveAllServers();
         }
 
         private async void ImportServerAndModlistButton_Click(object sender, EventArgs e)
@@ -299,21 +305,12 @@ namespace Conan_Exiles_Launcher.Controllers
 
         private async void steamToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            while (await Throws<InvalidSteamPathException>(ShowSteamPathBrowserDialog))
-            {
-                MessageBox.Show("Please select your SteamLibrary folder.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            await AskForSteamPath();
         }
 
         private async void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            while (await Throws<InvalidSavedDataPathException>(ShowSavedDataPathBrowserDialog))
-            {
-                MessageBox.Show("Please select a json file.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            await FetchSavedData();
-            await ImportMods();
+            await AskForSavefilePath();
         }
 
         private async void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -358,7 +355,7 @@ namespace Conan_Exiles_Launcher.Controllers
             {
                 return;
             }
-            
+
             if (MessageBox.Show("Are you sure you want to delete this server?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 try
@@ -379,6 +376,25 @@ namespace Conan_Exiles_Launcher.Controllers
             {
                 await _saveDataUseCase.SaveServer(ImportResultMapper.FromDto(dto));
             }
+        }
+
+        private async Task AskForSteamPath()
+        {
+            while (await Throws<InvalidSteamPathException>(ShowSteamPathBrowserDialog))
+            {
+                MessageBox.Show("Please select your SteamLibrary folder.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task AskForSavefilePath()
+        {
+            while (await Throws<InvalidSavedDataPathException>(ShowSavedDataPathBrowserDialog))
+            {
+                MessageBox.Show("Please select a json file.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            await FetchSavedData();
+            await ImportMods();
         }
 
         private async Task ShowSteamPathBrowserDialog()
@@ -407,21 +423,21 @@ namespace Conan_Exiles_Launcher.Controllers
 
         private async Task ShowSavedDataPathBrowserDialog()
         {
-            savedDataBrowserDialog.FileName = Settings.Default.SavedDataPath;
+            saveSavedDataFileDialog.FileName = Settings.Default.SavedDataPath;
             try
             {
-                savedDataBrowserDialog.InitialDirectory = Directory.GetParent(Settings.Default.SavedDataPath).FullName;
+                saveSavedDataFileDialog.InitialDirectory = Directory.GetParent(Settings.Default.SavedDataPath).FullName;
             }
             catch (Exception)
             {
                 /* No correct path was set. We're going to set that now. */
             }
 
-            DialogResult dialogResult = savedDataBrowserDialog.ShowDialog();
+            DialogResult dialogResult = saveSavedDataFileDialog.ShowDialog();
 
             if (dialogResult == DialogResult.OK)
             {
-                await _saveSavedDataPathUseCase.Save(savedDataBrowserDialog.FileName);
+                await _saveSavedDataPathUseCase.Save(saveSavedDataFileDialog.FileName);
             }
             else
             {
