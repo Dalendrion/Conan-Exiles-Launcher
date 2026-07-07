@@ -113,17 +113,16 @@ namespace Conan_Exiles_Launcher.Controllers
             try
             {
                 ImportResultDto lastPlayedServer = ImportResultMapper.ToDto(await _importLastPlayedServerUseCase.ImportAsync());
-                FetchSavedData();
+                await FetchSavedData();
 
                 ImportResultDto? matchingSavedResult = savedData.FirstOrDefault(s => ServerDataDto.HasSameIpAddress(s.Server, lastPlayedServer.Server));
                 if (matchingSavedResult != null)
                 {
                     savedData.Remove(matchingSavedResult);
                 }
+                savedData.Add(lastPlayedServer);
                 SelectedServer = lastPlayedServer;
                 serverListBox.SelectedItem = lastPlayedServer;
-
-                //FetchSavedData();
             }
             catch (Exception ex)
             {
