@@ -452,7 +452,7 @@
     <value>2, 3, 2, 3</value>
   </data>
   <data name="serverDataPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>660, 360</value>
+    <value>658, 358</value>
   </data>
   <data name="serverTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 3, 2, 3</value>
