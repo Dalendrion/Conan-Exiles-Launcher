@@ -30,6 +30,7 @@ namespace Conan_Exiles_Launcher.Controllers
                 new ImportInstalledModsService(InstalledModsPort),
                 new SaveDataService(SavedDataPort),
                 new LoadDataService(SavedDataPort),
+                new DeleteDataService(SavedDataPort),
                 new LaunchGameService(ModlistWriter, GameLauncher),
                 new SaveSteamPathService(SettingsPort),
                 new SaveSavedDataPathService(SettingsPort)

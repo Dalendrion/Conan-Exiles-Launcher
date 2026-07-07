@@ -7,5 +7,6 @@ namespace Conan_Exiles_Launcher.Domain.Ports
         public ImportResult? GetImportResult(Guid guid);
         public void SaveImportResult(ImportResult importResult);
         public List<ImportResult> GetAllImportResults();
+        public void DeleteImportResult(Guid guid);
     }
 }

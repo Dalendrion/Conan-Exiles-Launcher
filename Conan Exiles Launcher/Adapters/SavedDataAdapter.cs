@@ -65,6 +65,20 @@ namespace Conan_Exiles_Launcher.Adapters
             SaveAllImportResults(_savedData);
         }
 
+        public void DeleteImportResult(Guid guid)
+        {
+            ImportResult? existingImportResult = GetImportResult(guid);
+            if (existingImportResult != null)
+            {
+                _savedData.Remove(existingImportResult);
+                SaveAllImportResults(_savedData);
+            }
+            else
+            {
+                throw new ServerDoesNotExistException(guid);
+            }
+        }
+
         private void SaveAllImportResults(List<ImportResult> importResults)
         {
             var options = new JsonSerializerOptions

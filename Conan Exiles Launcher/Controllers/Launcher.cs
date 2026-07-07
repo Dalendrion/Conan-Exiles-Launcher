@@ -15,6 +15,7 @@ namespace Conan_Exiles_Launcher.Controllers
         private readonly IImportInstalledModsUseCase _importInstalledModsUseCase;
         private readonly ISaveDataUseCase _saveDataUseCase;
         private readonly ILoadDataUseCase _loadDataUseCase;
+        private readonly IDeleteDataUseCase _deleteDataUseCase;
         private readonly ILaunchGameUseCase _launchGameUseCase;
         private readonly ISaveSteamPathUseCase _saveSteamPathUseCase;
         private readonly ISaveSavedDataPathUseCase _saveSavedDataPathUseCase;
@@ -55,6 +56,7 @@ namespace Conan_Exiles_Launcher.Controllers
                         IImportInstalledModsUseCase importInstalledModsUseCase,
                         ISaveDataUseCase saveDataUseCase,
                         ILoadDataUseCase loadDataUseCase,
+                        IDeleteDataUseCase deleteDataUseCase,
                         ILaunchGameUseCase launchGameUseCase,
                         ISaveSteamPathUseCase saveSteamPathUseCase,
                         ISaveSavedDataPathUseCase saveSavedDataPathUseCase)
@@ -63,6 +65,7 @@ namespace Conan_Exiles_Launcher.Controllers
             _importInstalledModsUseCase = importInstalledModsUseCase ?? throw new ArgumentNullException(nameof(importInstalledModsUseCase));
             _saveDataUseCase = saveDataUseCase ?? throw new ArgumentNullException(nameof(saveDataUseCase));
             _loadDataUseCase = loadDataUseCase ?? throw new ArgumentNullException(nameof(loadDataUseCase));
+            _deleteDataUseCase = deleteDataUseCase ?? throw new ArgumentNullException(nameof(deleteDataUseCase));
             _launchGameUseCase = launchGameUseCase ?? throw new ArgumentNullException(nameof(launchGameUseCase));
             _saveSteamPathUseCase = saveSteamPathUseCase ?? throw new ArgumentNullException(nameof(saveSteamPathUseCase));
             _saveSavedDataPathUseCase = saveSavedDataPathUseCase ?? throw new ArgumentNullException(nameof(_saveSavedDataPathUseCase));
@@ -332,6 +335,41 @@ namespace Conan_Exiles_Launcher.Controllers
             else
             {
                 MessageBox.Show("Data was not saved.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private async void ServerListBox_OnMouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                int index = serverListBox.IndexFromPoint(e.Location);
+                if (index != ListBox.NoMatches)
+                {
+                    serverListBox.SelectedIndex = index;
+                }
+                serverListContextMenu.Show(Cursor.Position);
+            }
+        }
+
+        private async void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Guid? guid = SelectedServer?.Guid;
+            if (guid == null)
+            {
+                return;
+            }
+            
+            if (MessageBox.Show("Are you sure you want to delete this server?", "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            {
+                try
+                {
+                    await _deleteDataUseCase.DeleteDataAsync(guid.Value);
+                    savedData.Remove(SelectedServer);
+                }
+                catch (ServerDoesNotExistException)
+                {
+                    // ignore. It's gone, it's fine.
+                }
             }
         }
 

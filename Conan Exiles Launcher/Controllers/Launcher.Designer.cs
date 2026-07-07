@@ -78,6 +78,8 @@
             saveAsToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             steamToolStripMenuItem = new ToolStripMenuItem();
+            serverListContextMenu = new ContextMenuStrip(components);
+            deleteToolStripMenuItem = new ToolStripMenuItem();
             ipAddressErrorProvider = new ErrorProvider(components);
             steamPathBrowserDialog = new FolderBrowserDialog();
             savedDataBrowserDialog = new OpenFileDialog();
@@ -106,6 +108,7 @@
             panel3.SuspendLayout();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
+            serverListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ipAddressErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)steamPathErrorProvider).BeginInit();
             SuspendLayout();
@@ -223,6 +226,7 @@
             serverListBox.Sorted = true;
             ModOrderTooltip.SetToolTip(serverListBox, resources.GetString("serverListBox.ToolTip"));
             serverListBox.SelectedIndexChanged += serverListBox_SelectedIndexChanged;
+            serverListBox.MouseUp += ServerListBox_OnMouseUp;
             // 
             // tableLayoutPanel2
             // 
@@ -750,6 +754,26 @@
             steamToolStripMenuItem.Name = "steamToolStripMenuItem";
             steamToolStripMenuItem.Click += steamToolStripMenuItem_Click;
             // 
+            // serverListContextMenu
+            // 
+            resources.ApplyResources(serverListContextMenu, "serverListContextMenu");
+            steamPathErrorProvider.SetError(serverListContextMenu, resources.GetString("serverListContextMenu.Error"));
+            ipAddressErrorProvider.SetError(serverListContextMenu, resources.GetString("serverListContextMenu.Error1"));
+            steamPathErrorProvider.SetIconAlignment(serverListContextMenu, (ErrorIconAlignment)resources.GetObject("serverListContextMenu.IconAlignment"));
+            ipAddressErrorProvider.SetIconAlignment(serverListContextMenu, (ErrorIconAlignment)resources.GetObject("serverListContextMenu.IconAlignment1"));
+            ipAddressErrorProvider.SetIconPadding(serverListContextMenu, (int)resources.GetObject("serverListContextMenu.IconPadding"));
+            steamPathErrorProvider.SetIconPadding(serverListContextMenu, (int)resources.GetObject("serverListContextMenu.IconPadding1"));
+            serverListContextMenu.ImageScalingSize = new Size(20, 20);
+            serverListContextMenu.Items.AddRange(new ToolStripItem[] { deleteToolStripMenuItem });
+            serverListContextMenu.Name = "serverListContextMenu";
+            ModOrderTooltip.SetToolTip(serverListContextMenu, resources.GetString("serverListContextMenu.ToolTip"));
+            // 
+            // deleteToolStripMenuItem
+            // 
+            resources.ApplyResources(deleteToolStripMenuItem, "deleteToolStripMenuItem");
+            deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
+            // 
             // ipAddressErrorProvider
             // 
             ipAddressErrorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
@@ -842,6 +866,7 @@
             statusStrip1.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            serverListContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ipAddressErrorProvider).EndInit();
             ((System.ComponentModel.ISupportInitialize)steamPathErrorProvider).EndInit();
             ResumeLayout(false);
@@ -904,5 +929,7 @@
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem steamToolStripMenuItem;
         private SaveFileDialog saveSavedDataFileDialog;
+        private ContextMenuStrip serverListContextMenu;
+        private ToolStripMenuItem deleteToolStripMenuItem;
     }
 }
