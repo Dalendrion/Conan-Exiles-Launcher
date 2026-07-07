@@ -452,7 +452,7 @@
     <value>2, 3, 2, 3</value>
   </data>
   <data name="serverDataPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>662, 362</value>
+    <value>660, 360</value>
   </data>
   <data name="serverTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 3, 2, 3</value>
@@ -671,7 +671,7 @@
     <value>Fill</value>
   </data>
   <data name="selectedModsListBox.ItemHeight" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>23</value>
   </data>
   <data name="selectedModsListBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 3, 2, 3</value>
